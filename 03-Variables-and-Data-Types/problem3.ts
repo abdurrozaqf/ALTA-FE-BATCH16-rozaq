@@ -6,7 +6,6 @@ let number = prompt('Input Number : ')
 let unit = prompt('Unit : ')
 
 let stringToNumber = parseInt(number)
-
 let Celsius = stringToNumber;
 let Fahrenheit = stringToNumber;
 let Kelvin = stringToNumber;
