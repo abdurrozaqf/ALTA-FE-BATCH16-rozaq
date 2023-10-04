@@ -1,5 +1,11 @@
 function palindrome(word: string): boolean {
   // your code here
+
+  const words = word;
+
+  const reversedWord = words.split('').reverse().join('');
+
+  return words === reversedWord;
 }
 
 console.log(palindrome("civic")); // true
