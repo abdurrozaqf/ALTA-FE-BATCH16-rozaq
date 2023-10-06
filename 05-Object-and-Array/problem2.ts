@@ -3,6 +3,13 @@ function joinArrayRemoveDuplicate(
   arrayB: string[]
 ): string[] {
   // your code here
+
+  const mergeArray = ([...arrayA, ...arrayB])
+
+  const result = [...new Set(mergeArray)]
+
+  return result;
+
 }
 
 console.log(

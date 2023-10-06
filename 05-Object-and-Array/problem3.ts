@@ -1,5 +1,9 @@
 function removeDuplicates(array: number[]): number {
   // your code here
+
+  const uniqueArray = array.filter((value, index) => array.indexOf(value) === index)
+  return uniqueArray.length
+
 }
 
 console.log(removeDuplicates([2, 3, 3, 3, 6, 9, 9])); // 4
