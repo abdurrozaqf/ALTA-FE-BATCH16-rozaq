@@ -1,4 +1,4 @@
-function maximumBuyProduct(money: number, productPrice: number[]): number { //numebr
+function maximumBuyProduct(money: number, productPrice: number[]): number {
   // your code here
 
   let sort = productPrice.sort((a, b) => a - b);
