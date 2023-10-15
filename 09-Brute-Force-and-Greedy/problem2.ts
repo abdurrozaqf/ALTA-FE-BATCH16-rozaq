@@ -3,6 +3,25 @@ function dragonOfLoowater(
   knightHeight: number[]
 ): number | string {
   // your code here
+
+  const sortDragon = dragonHead.sort((a, b) => {
+    return a - b;
+  });
+  const sortKnight = knightHeight.sort((a, b) => {
+    return a - b;
+  });
+
+  let result = 0;
+  let head = 0;
+
+  for (const height of sortKnight) {
+    if (height >= sortDragon[head]) {
+      result += height;
+      head++;
+    }
+  }
+
+  return head === sortDragon.length ? result : "knight fall";
 }
 
 console.log(dragonOfLoowater([5, 4], [7, 8, 4])); // 11
