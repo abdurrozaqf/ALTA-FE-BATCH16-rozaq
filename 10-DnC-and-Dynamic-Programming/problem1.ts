@@ -1,5 +1,14 @@
 function fiboTopDown(n: number): number {
   // your code here
+
+  let result: number[] = [];
+  if (n <= 1) {
+    result[n] = n;
+  } else {
+    result[n] = fiboTopDown(n - 1) + fiboTopDown(n - 2);
+  }
+
+  return result[n];
 }
 
 console.log(fiboTopDown(0)); // 0

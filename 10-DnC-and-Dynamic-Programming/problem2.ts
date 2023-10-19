@@ -1,5 +1,20 @@
 function binarySearch(array: number[], x: number): number {
   // your code here
+
+  let start = 0;
+  let end = array.length - 1;
+  while (start <= end) {
+    let middle = Math.floor((start + end) / 2);
+    if (array[middle] === x) {
+      return middle;
+    } else if (array[middle] < x) {
+      start = middle + 1;
+    } else {
+      end = middle - 1;
+    }
+  }
+
+  return -1;
 }
 
 console.log(binarySearch([1, 1, 3, 5, 5, 6, 7], 3)); // 2
