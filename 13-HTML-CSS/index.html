@@ -9,10 +9,13 @@
   <body>
     <!-- NAVBAR -->
     <div id="container-navbar" class="container-navbar">
-      <a href="https://academy.alterra.id/" target="_blank">
-        <img src="assets/images/logo-ALTA.png" alt="Logo Arlterra Academy" />
-      </a>
-      <ul>
+      <div class="btn-navbar">
+        <a href="https://academy.alterra.id/" target="_blank">
+          <img src="assets/images/logo-ALTA.png" alt="Logo Arlterra Academy" />
+        </a>
+        <div id="btn"></div>
+      </div>
+      <ul id="navbar-menu">
         <li><a href="index.html" style="color: #f47522">HOME</a></li>
         <li><a href="about.html">ABOUT</a></li>
         <li><a href="">EXPERIENCE</a></li>
@@ -24,11 +27,9 @@
     <div id="container-home" class="container-home">
       <img src="assets/images/avatar.jpg" alt="Profile Picture" />
       <ul>
-        <li style="font-weight: 500; font-size: 25px">Hi, my name is</li>
-        <li style="font-weight: bold; font-size: 85px">Anne Sullivan</li>
-        <li style="font-weight: 500; font-size: 35px">
-          I build things for the web
-        </li>
+        <li id="p1">Hi, my name is</li>
+        <li id="p2" style="font-weight: bold">Anne Sullivan</li>
+        <li id="p3">I build things for the web</li>
         <button>Get In Touch</button>
       </ul>
     </div>
@@ -90,4 +91,18 @@
       </div>
     </div>
   </body>
+  <script>
+    const btn = document.getElementById("btn");
+    const navbarMenu = document.getElementById("navbar-menu");
+    btn.innerHTML = `
+    <button id="style-btn-show">Menu</button>
+    <button id="style-btn-hiden">Back</button>
+    `;
+
+    const btnHide = document.getElementById("style-btn-show");
+    btn.addEventListener("click", () => {
+      navbarMenu.classList.toggle("visible");
+      btnHide.classList.toggle("hide");
+    });
+  </script>
 </html>

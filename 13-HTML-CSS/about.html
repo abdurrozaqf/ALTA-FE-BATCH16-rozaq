@@ -9,10 +9,13 @@
   <body>
     <!-- NAVBAR -->
     <div id="container-navbar" class="container-navbar">
-      <a href="https://academy.alterra.id/" target="_blank">
-        <img src="assets/images/logo-ALTA.png" alt="Logo Arlterra Academy" />
-      </a>
-      <ul>
+      <div class="btn-navbar">
+        <a href="https://academy.alterra.id/" target="_blank">
+          <img src="assets/images/logo-ALTA.png" alt="Logo Arlterra Academy" />
+        </a>
+        <div id="btn"></div>
+      </div>
+      <ul id="navbar-menu">
         <li><a href="index.html">HOME</a></li>
         <li><a href="about.html" style="color: #f47522">ABOUT</a></li>
         <li><a href="">EXPERIENCE</a></li>
@@ -23,29 +26,30 @@
     <!-- CONTENT ABOUT -->
     <div id="container-about" class="container-about">
       <div class="container-about-title">ABOUT ME.</div>
-
       <div class="container-about-content">
         <div class="container-about-content-detail">
           <p id="description">
-            Versatile Front-end Developer with 3+ years of experience <br />
-            designing, developing, and managing complex e-commerce <br />sites
-            and internal frameworks. Specializes in Angular JS <br />
-            and responsive design.
+            Versatile Front-end Developer with 3+ years of experience designing,
+            developing, and managing complex e-commerce sites and internal
+            frameworks. Specializes in Angular JS and responsive design.
           </p>
           <p id="title">Education</p>
           <ul>
-            <li id="year">2014</li>
-            <li id="desc" style="font-weight: 500">DIPLOMA</li>
-            <li id="desc">Computer-Engineering - University of Chicago</li>
+            <li style="list-style-type: disc; font-size: 20px">2014</li>
+            <li>DIPLOMA</li>
+            <li style="font-weight: 400">
+              Computer-Engineering - University of Chicago
+            </li>
             <br />
-            <li id="year">2016</li>
-            <li id="desc" style="font-weight: 500">BACHELOR OF DEGREE</li>
-            <li id="desc">BS Computer-Engineering - University of Chicago</li>
+            <li style="list-style-type: disc; font-size: 20px">2016</li>
+            <li>BACHELOR OF DEGREE</li>
+            <li style="font-weight: 400">
+              BS Computer-Engineering - University of Chicago
+            </li>
           </ul>
           <p id="sub-title">
             Here's few technologies I've been working with recently :
           </p>
-
           <table>
             <tr>
               <td>HTML & CSS</td>
@@ -137,4 +141,18 @@
       </div>
     </div>
   </body>
+  <script>
+    const btn = document.getElementById("btn");
+    const navbarMenu = document.getElementById("navbar-menu");
+    btn.innerHTML = `
+    <button id="style-btn-show">Menu</button>
+    <button id="style-btn-hiden">Back</button>
+    `;
+
+    const btnHide = document.getElementById("style-btn-show");
+    btn.addEventListener("click", () => {
+      navbarMenu.classList.toggle("visible");
+      btnHide.classList.toggle("hide");
+    });
+  </script>
 </html>
