@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>About</title>
-    <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="stylesheet" href="assets/css/about.css" />
   </head>
   <body>
     <!-- NAVBAR -->
@@ -13,7 +13,11 @@
         <a href="https://academy.alterra.id/" target="_blank">
           <img src="assets/images/logo-ALTA.png" alt="Logo Arlterra Academy" />
         </a>
-        <div id="btn"></div>
+        <div id="hamburger-icon" class="hamburger-icon">
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+        </div>
       </div>
       <ul id="navbar-menu">
         <li><a href="index.html">HOME</a></li>
@@ -142,17 +146,12 @@
     </div>
   </body>
   <script>
-    const btn = document.getElementById("btn");
+    const btnBurger = document.getElementById("hamburger-icon");
     const navbarMenu = document.getElementById("navbar-menu");
-    btn.innerHTML = `
-    <button id="style-btn-show">Menu</button>
-    <button id="style-btn-hiden">Back</button>
-    `;
 
-    const btnHide = document.getElementById("style-btn-show");
-    btn.addEventListener("click", () => {
+    btnBurger.addEventListener("click", () => {
       navbarMenu.classList.toggle("visible");
-      btnHide.classList.toggle("hide");
+      btnBurger.classList.toggle("active");
     });
   </script>
 </html>
