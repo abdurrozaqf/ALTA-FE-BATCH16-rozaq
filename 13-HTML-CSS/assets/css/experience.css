@@ -32,8 +32,8 @@ body {
 
 /* NAVBAR */
 .padding-navbar {
-  padding-right: 8rem !important;
   padding-left: 8rem !important;
+  padding-right: 8rem !important;
 }
 
 .nav-shadow {
@@ -51,14 +51,14 @@ body {
 
 /* CONTENT EXPERIENCE */
 h6 {
-  border-bottom: 0.1rem solid #bdbdbd;
   padding-bottom: 1rem;
+  border-bottom: 0.1rem solid #bdbdbd;
 }
 
 .heading-title {
-  margin-top: 5.4rem !important;
   padding-left: 8.5rem;
   color: var(--text-color-1);
+  margin-top: 5.4rem !important;
   background-color: var(--bg-color-3) !important;
 }
 
@@ -77,13 +77,13 @@ h6 {
 }
 
 .chekpoint:nth-child(odd) {
-  border-left: 0.1rem solid #bdbdbd;
   padding-left: 6rem;
+  border-left: 0.1rem solid #bdbdbd;
 }
 
 .chekpoint:nth-child(even) {
-  border-left: 0.1rem solid #bdbdbd;
   padding-left: 6rem;
+  border-left: 0.1rem solid #bdbdbd;
 }
 
 .chekpoint:nth-child(odd)::before,
@@ -92,11 +92,11 @@ h6 {
   width: 1rem;
   height: 1rem;
   border-radius: 50%;
-  background-color: var(--bg-color-1);
-  position: absolute;
-  z-index: 1;
   top: 50%;
+  z-index: 1;
   left: -0.5rem;
+  position: absolute;
+  background-color: var(--bg-color-1);
 }
 /* ----------------- */
 
@@ -110,24 +110,24 @@ h6 {
 }
 
 .con-social-media {
+  gap: 1rem;
   display: flex;
+  margin-left: 0.4rem;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
-  margin-left: 0.4rem;
 }
 
 .font-copyright {
-  font-size: 0.8rem !important;
   font-weight: 300;
+  font-size: 0.8rem !important;
 }
 /* ----------------- */
 
 @media screen and (max-width: 991px) {
   /* NAVBAR */
   .padding-navbar {
-    padding-right: 2.5rem !important;
     padding-left: 2.5rem !important;
+    padding-right: 2.5rem !important;
   }
 
   /* FOOTER */
@@ -151,8 +151,8 @@ h6 {
 @media screen and (max-width: 768px) {
   /* NAVBAR */
   .padding-navbar {
-    padding-right: 2rem !important;
     padding-left: 2rem !important;
+    padding-right: 2rem !important;
   }
 
   /* CONTENT */
@@ -167,7 +167,7 @@ h6 {
 
   .chekpoint:nth-child(even) {
     border-left: 0;
-    padding-left: 00;
+    padding-left: 0;
   }
 
   .chekpoint:nth-child(odd)::before {
@@ -177,10 +177,11 @@ h6 {
     border-radius: 0;
     background-color: none;
     position: absolute;
-    z-index: 1;
     top: 0;
     left: 0;
+    z-index: 0;
   }
+
   .chekpoint:nth-child(even)::before {
     content: "";
     width: 0.1rem;
@@ -188,9 +189,9 @@ h6 {
     border-radius: 0;
     background-color: #bdbdbd;
     position: absolute;
-    z-index: -1;
     top: 0;
     left: 50%;
+    z-index: -1;
   }
 
   /* FOOTER */

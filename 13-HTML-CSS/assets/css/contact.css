@@ -51,19 +51,19 @@ body {
 
 /* CONTENT EXPERIENCE */
 .content-left {
-  background-position: center;
+  min-height: 90vh;
+  position: relative;
   background-size: cover;
+  background-position: center;
   background-image: linear-gradient(#19345ea8, #19345ea8),
     url("../images/charles-rRWiVQzLm7k-unsplash.jpg");
-  position: relative;
-  min-height: 90vh;
 }
 
 .logo-alterra {
-  background-image: url("");
-  position: absolute;
   top: 40%;
   right: 25%;
+  position: absolute;
+  background-image: url("");
 }
 
 .content-right {
@@ -81,10 +81,10 @@ input::placeholder {
 }
 
 .btn {
+  font-weight: 300 !important;
+  border: 0rem solid !important;
   border-radius: 2rem !important;
   padding: 0.6rem 2rem !important;
-  border: 0rem solid !important;
-  font-weight: 300 !important;
   color: var(--text-color-3) !important;
   background-color: var(--bg-color-2) !important;
 }
@@ -100,24 +100,24 @@ input::placeholder {
 }
 
 .con-social-media {
+  gap: 1rem;
   display: flex;
+  margin-left: 0.4rem;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
-  margin-left: 0.4rem;
 }
 
 .font-copyright {
-  font-size: 0.8rem !important;
   font-weight: 300;
+  font-size: 0.8rem !important;
 }
 /* ----------------- */
 
 @media screen and (max-width: 991px) {
   /* NAVBAR */
   .padding-navbar {
-    padding-right: 2.5rem !important;
     padding-left: 2.5rem !important;
+    padding-right: 2.5rem !important;
   }
 
   /* CONTENT */
@@ -146,8 +146,8 @@ input::placeholder {
 @media screen and (max-width: 768px) {
   /* NAVBAR */
   .padding-navbar {
-    padding-right: 2rem !important;
     padding-left: 2rem !important;
+    padding-right: 2rem !important;
   }
 
   /* FOOTER */
