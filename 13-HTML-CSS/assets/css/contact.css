@@ -1,0 +1,162 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap");
+
+:root {
+  --text-color-1: #19345e;
+  --text-color-2: #d5d5d5;
+  --text-color-3: #ffffff;
+  --text-color-4: #f47522;
+  --bg-color-1: #19345e;
+  --bg-color-2: #f47522;
+  --bg-color-3: #f4f7fc;
+  --bg-color-4: #ffffff;
+  --bg-color-5: #707070;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+}
+
+html {
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+/* NAVBAR */
+.padding-navbar {
+  padding-right: 8rem !important;
+  padding-left: 8rem !important;
+}
+
+.nav-shadow {
+  box-shadow: 0rem 0rem 0.8rem #bebebe;
+}
+
+.nav-link {
+  color: var(--text-color-1) !important;
+}
+
+.active {
+  color: var(--text-color-4) !important;
+}
+/* ----------------- */
+
+/* CONTENT EXPERIENCE */
+.content-left {
+  background-position: center;
+  background-size: cover;
+  background-image: linear-gradient(#19345ea8, #19345ea8),
+    url("../images/charles-rRWiVQzLm7k-unsplash.jpg");
+  position: relative;
+  min-height: 90vh;
+}
+
+.logo-alterra {
+  background-image: url("");
+  position: absolute;
+  top: 40%;
+  right: 25%;
+}
+
+.content-right {
+  min-height: 90vh;
+}
+
+.form-label {
+  color: var(--text-color-1);
+  font-weight: 500 !important;
+}
+
+input::placeholder {
+  color: #bebebe !important;
+  font-weight: 300 !important;
+}
+
+.btn {
+  border-radius: 2rem !important;
+  padding: 0.6rem 2rem !important;
+  border: 0rem solid !important;
+  font-weight: 300 !important;
+  color: var(--text-color-3) !important;
+  background-color: var(--bg-color-2) !important;
+}
+/* ----------------- */
+
+/* FOOTER */
+.logo-footer {
+  padding-left: 8.5rem !important;
+}
+
+.straight-line {
+  border-right: 0.05rem solid var(--bg-color-5) !important;
+}
+
+.con-social-media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-left: 0.4rem;
+}
+
+.font-copyright {
+  font-size: 0.8rem !important;
+  font-weight: 300;
+}
+/* ----------------- */
+
+@media screen and (max-width: 991px) {
+  /* NAVBAR */
+  .padding-navbar {
+    padding-right: 2.5rem !important;
+    padding-left: 2.5rem !important;
+  }
+
+  /* CONTENT */
+  .content-left {
+    display: none;
+  }
+
+  /* FOOTER */
+  .logo-footer {
+    padding-left: 3.2rem !important;
+  }
+
+  .container-footer {
+    padding: 2rem 2.5rem;
+  }
+
+  .container-footer-logo {
+    padding-left: 0;
+  }
+
+  .container-footer-copyright {
+    padding-left: 4rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  /* NAVBAR */
+  .padding-navbar {
+    padding-right: 2rem !important;
+    padding-left: 2rem !important;
+  }
+
+  /* FOOTER */
+  .straight-line {
+    border-right: 0 !important;
+    border-bottom: 0.05rem solid var(--bg-color-5) !important;
+  }
+  .logo-footer {
+    display: flex;
+    justify-content: center;
+  }
+}
