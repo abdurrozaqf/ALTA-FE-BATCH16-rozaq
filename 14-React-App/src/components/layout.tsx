@@ -40,7 +40,7 @@ const Layout = (props: Readonly<Props>) => {
               </Link>
             </div>
             <div>
-              <Link to={"/login"}>
+              <Link to={"/"}>
                 <SidebarItem icon={<LogIn />} text="Login" />
               </Link>
               <Link to={"/register"}>

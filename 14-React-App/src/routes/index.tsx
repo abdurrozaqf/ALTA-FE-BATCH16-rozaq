@@ -14,7 +14,7 @@ import AdminListBorrow from "@/pages/admin/list-borrow-book";
 export default function Router() {
   const router = createBrowserRouter([
     {
-      path: "/login",
+      path: "/",
       element: <Login />,
     },
     {
@@ -30,7 +30,7 @@ export default function Router() {
       element: <ListOfBook />,
     },
     {
-      path: "/detail-book",
+      path: "/detail-book/:itemId",
       element: <DetailBook />,
     },
     {
@@ -52,10 +52,6 @@ export default function Router() {
     {
       path: "/admin-list-borrow",
       element: <AdminListBorrow />,
-    },
-    {
-      path: "*",
-      element: <Login />,
     },
   ]);
 

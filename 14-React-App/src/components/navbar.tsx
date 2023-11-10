@@ -56,7 +56,7 @@ const Navbar = (props: Props) => {
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <a className="w-full flex justify-between" href="/login">
+              <a className="w-full flex justify-between" href="/">
                 Logout <LogOut strokeWidth={"1px"} size={"1.2rem"} />
               </a>
             </DropdownMenuItem>
