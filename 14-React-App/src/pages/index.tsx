@@ -1,9 +1,9 @@
+import { Book, getBooks } from "@/utils/apis/books";
 import { useState, useEffect } from "react";
-
-import Layout from "@/components/layout";
-import BookCard from "@/components/book-card";
-import { getBooks, Book } from "@/utils/apis/books";
 import { Link } from "react-router-dom";
+
+import BookCard from "@/components/book-card";
+import Layout from "@/components/layout";
 
 const Home = () => {
   const [books, setBooks] = useState<Book[]>([]);
@@ -16,8 +16,8 @@ const Home = () => {
     try {
       const result = await getBooks();
       setBooks(result.payload.datas);
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      alert(error.toString());
     }
   }
 
@@ -38,11 +38,7 @@ const Home = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 justify-items-center">
           {books
             .map((book, index) =>
-              index < 4 ? (
-                <Link to={"/detail-book"}>
-                  <BookCard key={book.id} data={book} />
-                </Link>
-              ) : undefined
+              index < 4 ? <BookCard key={book.id} data={book} /> : undefined
             )
             .filter((book) => book !== undefined)}
         </div>

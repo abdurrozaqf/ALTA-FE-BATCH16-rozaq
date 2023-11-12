@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 
-import Layout from "@/components/layout";
-import BookCard from "@/components/book-card";
 import { getBooks, Book } from "@/utils/apis/books";
-import { Link } from "react-router-dom";
+import BookCard from "@/components/book-card";
+import Layout from "@/components/layout";
 
 const ListOfBook = () => {
   const [books, setBooks] = useState<Book[]>([]);
@@ -16,17 +15,15 @@ const ListOfBook = () => {
     try {
       const result = await getBooks();
       setBooks(result.payload.datas);
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      alert(error.toString());
     }
   }
   return (
     <Layout title="List Of Books">
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 justify-items-center">
         {books.map((book) => (
-          <Link to={"/detail-book"}>
-            <BookCard key={book.id} data={book} />
-          </Link>
+          <BookCard key={book.id} data={book} />
         ))}
       </div>
     </Layout>

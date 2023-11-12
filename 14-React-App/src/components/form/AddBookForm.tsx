@@ -1,113 +1,82 @@
-"use client";
-
-import { useForm } from "react-hook-form";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../ui/form";
-import * as z from "zod";
-
-import { Input } from "../ui/input";
+import { createBook } from "@/utils/apis/books";
+import { FormEvent, useState } from "react";
 import { Button } from "../ui/button";
-import { Textarea } from "../ui/textarea";
-import { zodResolver } from "@hookform/resolvers/zod";
-
-const FormSchema = z.object({
-  namebook: z.string().min(1, "Name book is required").max(100),
-  author: z.string().min(1, "Author is required").max(30),
-  category: z.string().min(1, "Category is required").max(20),
-  description: z
-    .string()
-    .min(1, "Description is required")
-    .min(50, "Too short")
-    .max(1000),
-});
+import { Input } from "../ui/input";
 
 const AddBookForm = () => {
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
-    defaultValues: {
-      namebook: "",
-      author: "",
-      category: "",
-      description: "",
-    },
-  });
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [isbn, setIsbn] = useState("");
+  const [category, setCategory] = useState("");
+  const [description, setDescription] = useState("");
 
-  const onSubmit = (values: z.infer<typeof FormSchema>) => {
-    console.log(values);
-  };
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    try {
+      const body = {
+        title: title,
+        author,
+        isbn,
+        category,
+        description,
+      };
+
+      const result = await createBook(body);
+      alert(result.message);
+    } catch (error: any) {
+      alert(error.toString());
+    }
+  }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
-        <div className="space-y-2">
-          <FormField
-            control={form.control}
-            name="namebook"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Name Book</FormLabel>
-                <FormControl>
-                  <Input placeholder="The King of SEA" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="author"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Author</FormLabel>
-                <FormControl>
-                  <Input placeholder="InYourdreaM" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="category"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Category</FormLabel>
-                <FormControl>
-                  <Input placeholder="Action" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Description</FormLabel>
-                <FormControl>
-                  <Textarea
-                    placeholder="Tell us a little bit about book"
-                    className="resize-none"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        <Button className="w-full mt-4" type="submit">
-          Save
-        </Button>
-      </form>
-    </Form>
+    <form className="w-full flex flex-col gap-3" onSubmit={(e) => onSubmit(e)}>
+      <div className="">
+        <p className="font-semibold">Title</p>
+        <Input
+          placeholder="The King of SEA"
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+      </div>
+      <div className="">
+        <p className="font-semibold">Author</p>
+        <Input
+          placeholder="inYourdreaM"
+          type="text"
+          value={author}
+          onChange={(e) => setAuthor(e.target.value)}
+        />
+      </div>
+      <div className="">
+        <p className="font-semibold">ISBN</p>
+        <Input
+          placeholder="ISBN"
+          type="text"
+          value={isbn}
+          onChange={(e) => setIsbn(e.target.value)}
+        />
+      </div>
+      <div className="">
+        <p className="font-semibold">Category</p>
+        <Input
+          placeholder="Category"
+          type="text"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+        />
+      </div>
+      <div className="">
+        <p className="font-semibold">Description</p>
+        <Input
+          placeholder="Description"
+          type="text"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+      </div>
+      <Button type="submit">Add Book</Button>
+    </form>
   );
 };
 

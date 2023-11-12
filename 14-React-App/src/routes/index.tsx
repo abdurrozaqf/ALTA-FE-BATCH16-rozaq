@@ -1,12 +1,12 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import Login from "@/pages/auth/login";
-import Register from "@/pages/auth/register";
+import LoginAccount from "@/pages/auth/login";
+import RegisterAccount from "@/pages/auth/register";
 import Home from "@/pages/index";
 import ListOfBook from "@/pages/books/index";
 import DetailBook from "@/pages/books/detail";
 import HistoryBorrow from "@/pages/profile/history-borrow";
-import Profile from "@/pages/profile/index";
+import ProfileAccount from "@/pages/profile/index";
 import EditProfile from "@/pages/profile/edit-profile";
 import Admin from "@/pages/admin/index";
 import AdminListBorrow from "@/pages/admin/list-borrow-book";
@@ -15,11 +15,11 @@ export default function Router() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Login />,
+      element: <LoginAccount />,
     },
     {
       path: "/register",
-      element: <Register />,
+      element: <RegisterAccount />,
     },
     {
       path: "/home",
@@ -30,7 +30,7 @@ export default function Router() {
       element: <ListOfBook />,
     },
     {
-      path: "/detail-book/:itemId",
+      path: "/detail-book",
       element: <DetailBook />,
     },
     {
@@ -39,7 +39,7 @@ export default function Router() {
     },
     {
       path: "/profile",
-      element: <Profile />,
+      element: <ProfileAccount />,
     },
     {
       path: "/edit-profile",
@@ -52,6 +52,10 @@ export default function Router() {
     {
       path: "/admin-list-borrow",
       element: <AdminListBorrow />,
+    },
+    {
+      path: "*",
+      element: <div>404 page not found</div>,
     },
   ]);
 

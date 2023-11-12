@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
 
 import Layout from "@/components/layout";
-import BookCard from "@/components/book-card";
-import { getBooks, Book } from "@/utils/apis/books";
-import { Link } from "react-router-dom";
+import BookCardHistory from "@/components/book-card-history";
+import { getBorrows, Borrow } from "@/utils/apis/borrow";
 
 const HistoryBorrow = () => {
-  const [books, setBooks] = useState<Book[]>([]);
+  const [borrow, setBorrow] = useState<Borrow[]>([]);
 
   useEffect(() => {
     fetchData();
@@ -14,10 +13,10 @@ const HistoryBorrow = () => {
 
   async function fetchData() {
     try {
-      const result = await getBooks();
-      setBooks(result.payload.datas);
-    } catch (error) {
-      console.log(error);
+      const result = await getBorrows();
+      setBorrow(result.payload.datas);
+    } catch (error: any) {
+      alert(error.toString());
     }
   }
 
@@ -27,16 +26,11 @@ const HistoryBorrow = () => {
         <p className="text-[#4D4D4D] text-md font-semibold mb-6">
           History Borrow your book
         </p>
+        {/* <img src={} alt="" /> */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 justify-items-center">
-          {books
-            .map((book, index) =>
-              index < 2 ? (
-                <Link to={"/detail-book"}>
-                  <BookCard key={book.id} data={book} />
-                </Link>
-              ) : undefined
-            )
-            .filter((book) => book !== undefined)}
+          {borrow.map((borrow) => (
+            <BookCardHistory key={borrow.id} data={borrow} />
+          ))}
         </div>
       </Layout>
     </>

@@ -4,8 +4,8 @@ export type Response<T = any> = {
 };
 
 export type PayloadPagination<T = any> = {
-  totalItems: number;
-  datas: T;
-  totalPages: number;
   currentPage: number;
+  datas: T;
+  totalItems: number;
+  totalPages: number;
 };

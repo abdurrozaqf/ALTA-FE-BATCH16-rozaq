@@ -8,3 +8,11 @@ export interface Book {
   description: string;
   cover_image: string;
 }
+
+export interface BookPayload {
+  title: string;
+  author: string;
+  isbn: string;
+  category: string;
+  description: string;
+}

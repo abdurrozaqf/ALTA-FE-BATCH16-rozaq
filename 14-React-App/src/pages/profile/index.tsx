@@ -1,8 +1,25 @@
+import { User, getProfile } from "@/utils/apis/users";
+import { useEffect, useState } from "react";
 import Layout from "@/components/layout";
-import { EyeOff, FileEdit } from "lucide-react";
+import { FileEdit } from "lucide-react";
 import { Link } from "react-router-dom";
 
-const Profile = () => {
+const ProfileAccount = () => {
+  const [profile, setProfile] = useState<User>();
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  async function fetchData() {
+    try {
+      const result = await getProfile();
+      setProfile(result.payload);
+    } catch (error: any) {
+      alert(error.toString());
+    }
+  }
+
   return (
     <>
       <Layout title="Profile">
@@ -16,33 +33,32 @@ const Profile = () => {
             </Link>
           </div>
           <img
-            src="https://github.com/shadcn.png"
-            alt="Profile"
-            className="w-64 rounded-full"
+            src={profile?.profile_picture}
+            alt={profile?.full_name}
+            className="w-40 h-40 aspect-square rounded-full object-cover"
           />
           <div className="w-1/2">
             <p className="font-semibold">Name</p>
             <div className="px-4 py-2 border border-slate-300 rounded-md">
-              <p>John Doe</p>
-            </div>
-          </div>
-          <div className="w-1/2">
-            <p className="font-semibold">Username</p>
-            <div className="px-4 py-2 border border-slate-300 rounded-md">
-              <p>@johndoe</p>
+              <p>{profile?.full_name}</p>
             </div>
           </div>
           <div className="w-1/2">
             <p className="font-semibold">Email</p>
             <div className="px-4 py-2 border border-slate-300 rounded-md">
-              <p>johndoe@domain.com</p>
+              <p>{profile?.email}</p>
             </div>
           </div>
           <div className="w-1/2">
-            <p className="font-semibold">Password</p>
-            <div className="px-4 py-2 border flex items-center justify-between border-slate-300 rounded-md">
-              <p>********</p>
-              <EyeOff strokeWidth={"1.2px"} />
+            <p className="font-semibold">Address</p>
+            <div className="px-4 py-2 border border-slate-300 rounded-md">
+              <p>{profile?.address}</p>
+            </div>
+          </div>
+          <div className="w-1/2">
+            <p className="font-semibold">Phone Number</p>
+            <div className="px-4 py-2 border border-slate-300 rounded-md">
+              <p>{profile?.phone_number}</p>
             </div>
           </div>
         </div>
@@ -51,4 +67,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default ProfileAccount;

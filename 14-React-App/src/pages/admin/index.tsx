@@ -1,14 +1,15 @@
 import { useState, useEffect } from "react";
 
-import { getBooks, Book } from "@/utils/apis/books";
+import { getBooks, Book, deleteBook } from "@/utils/apis/books";
 import { FilePlus2, Pencil, Trash2 } from "lucide-react";
 
-import Layout from "@/components/layout";
+import EditBookForm from "@/components/form/EditBookForm";
 import AddBookForm from "@/components/form/AddBookForm";
+import Layout from "@/components/layout";
+import Alert from "@/components/alert";
 
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -39,10 +40,20 @@ const Admin = () => {
     try {
       const result = await getBooks();
       setBooks(result.payload.datas);
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      alert(error.toString());
     }
   }
+
+  async function handleDeleteBook() {
+    try {
+      const result = await deleteBook("1");
+      alert(result.message);
+    } catch (error: any) {
+      alert(error.toString());
+    }
+  }
+
   return (
     <>
       <Layout title="List of Books">
@@ -104,7 +115,7 @@ const Admin = () => {
                       <AlertDialogHeader>
                         <AlertDialogTitle>Edit Books</AlertDialogTitle>
                         <AlertDialogDescription>
-                          <AddBookForm />
+                          <EditBookForm />
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
@@ -113,29 +124,17 @@ const Admin = () => {
                     </AlertDialogContent>
                   </AlertDialog>
 
-                  <AlertDialog>
-                    <AlertDialogTrigger>
-                      <div className="p-3 bg-white rounded-md shadow-md hover:bg-indigo-400 hover:text-white">
-                        <Trash2 />
-                      </div>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>
-                          Are you absolutely sure deleted this book?
-                        </AlertDialogTitle>
-                        <AlertDialogDescription>
-                          This action cannot be undone. This will permanently
+                  <Alert
+                    title="Are you absolutely sure deleted this book?"
+                    description="This action cannot be undone. This will permanently
                           delete your book and remove your data from our
-                          servers.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction>Continue</AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
+                          servers."
+                    onAction={handleDeleteBook}
+                  >
+                    <div className="p-3 bg-white rounded-md shadow-md hover:bg-indigo-400 hover:text-white">
+                      <Trash2 />
+                    </div>
+                  </Alert>
                 </TableCell>
               </TableRow>
             ))}

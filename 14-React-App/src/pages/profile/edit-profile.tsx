@@ -1,153 +1,159 @@
-"use client";
+import { FormEvent, useEffect, useState } from "react";
+import { Trash2 } from "lucide-react";
 
-import { useForm } from "react-hook-form";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Input } from "@/components/ui/input";
 import Layout from "@/components/layout";
-import { Save } from "lucide-react";
+import Alert from "@/components/alert";
 
-const FormSchema = z
-  .object({
-    name: z.string().min(1, "Name is required").max(100),
-    username: z.string().min(1, "Username is required").max(100),
-    email: z.string().min(1, "Email is required").email("Invalid email"),
-    password: z
-      .string()
-      .min(1, "Password is required")
-      .min(8, "Password must have than 8 characters"),
-    confirmPassword: z.string().min(1, "Password confirmation is required"),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    path: ["confirmPassword"],
-    message: "Password do not match",
-  });
+import {
+  User,
+  deleteProfile,
+  getProfile,
+  updateProfile,
+} from "@/utils/apis/users";
 
 const EditProfile = () => {
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
-    defaultValues: {
-      name: "",
-      username: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-    },
+  const [profile, setProfile] = useState<Partial<User>>({
+    full_name: "",
+    email: "",
+    address: "",
+    phone_number: "",
+    password: "",
   });
 
-  const onSubmit = (values: z.infer<typeof FormSchema>) => {
-    console.log(values);
-  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  async function fetchData() {
+    try {
+      const result = await getProfile();
+      setProfile(result.payload);
+    } catch (error: any) {
+      alert(error.toString());
+    }
+  }
+
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const body = {
+      full_name: profile.full_name ?? "",
+      email: profile.email ?? "",
+      password: profile.password ?? "",
+      address: profile.address ?? "",
+      phone_number: profile.phone_number ?? "",
+    };
+
+    try {
+      const result = await updateProfile(body);
+      alert(result.message);
+    } catch (error: any) {
+      alert(error.toString());
+    }
+  }
+
+  async function handleDeleteProfile() {
+    try {
+      const result = await deleteProfile();
+      alert(result.message);
+    } catch (error: any) {
+      alert(error.toString());
+    }
+  }
 
   return (
     <>
       <Layout title="Edit Profile">
-        <div className="flex flex-col items-center space-y-5 relative">
+        <div className="flex flex-col items-center gap-5 relative">
           <div className="w-full flex justify-end absolute">
-            <Link
-              to={"/profile"}
-              className="p-3 bg-white rounded-md shadow-md hover:bg-indigo-50"
+            <Alert
+              title="Are you absolutely sure?"
+              description="This action cannot be undone. This will permanently delete your account and remove your data from our servers."
+              onAction={handleDeleteProfile}
             >
-              <Save strokeWidth={"1.2px"} />
-            </Link>
+              <Button
+                variant="destructive"
+                className="shadow-md border hover:bg-red-800"
+              >
+                <Trash2 />
+              </Button>
+            </Alert>
           </div>
           <img
-            src="https://github.com/shadcn.png"
-            alt="Profile"
-            className="w-40 rounded-full "
+            src={profile.profile_picture}
+            alt={profile.full_name}
+            className="w-32 h-32 rounded-full"
           />
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
-              <div className="space-y-2">
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Name</FormLabel>
-                      <FormControl>
-                        <Input defaultValue="John Doe" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="username"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Username</FormLabel>
-                      <FormControl>
-                        <Input defaultValue="@johndoe" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email ID</FormLabel>
-                      <FormControl>
-                        <Input defaultValue="johndoe@domain.com" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Old Password</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="password"
-                          placeholder="Enter your password"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="confirmPassword"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>New Password</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Enter your new password"
-                          type="password"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <Button className="w-full mt-6" type="submit">
-                Save
-              </Button>
-            </form>
-          </Form>
+          <form
+            className="w-1/2 flex flex-col gap-3"
+            onSubmit={(e) => onSubmit(e)}
+          >
+            <div className="">
+              <p className="font-semibold">Full Name</p>
+              <Input
+                type="text"
+                value={profile?.full_name}
+                onChange={(e) =>
+                  setProfile((prevState) => {
+                    return { ...prevState, full_name: e.target.value };
+                  })
+                }
+              />
+            </div>
+            <div className="">
+              <p className="font-semibold">Email</p>
+              <Input
+                type="email"
+                value={profile?.email}
+                onChange={(e) =>
+                  setProfile((prevState) => {
+                    return { ...prevState, email: e.target.value };
+                  })
+                }
+              />
+            </div>
+
+            <div className="">
+              <p className="font-semibold">Address</p>
+              <Input
+                type="text"
+                value={profile?.address}
+                onChange={(e) =>
+                  setProfile((prevState) => {
+                    return { ...prevState, address: e.target.value };
+                  })
+                }
+              />
+            </div>
+            <div className="">
+              <p className="font-semibold">Phone Number</p>
+              <Input
+                type="number"
+                value={profile?.phone_number}
+                onChange={(e) =>
+                  setProfile((prevState) => {
+                    return { ...prevState, phone_number: e.target.value };
+                  })
+                }
+              />
+            </div>
+            <div className="">
+              <p className="font-semibold">Password</p>
+              <Input
+                type="password"
+                value={profile?.password}
+                onChange={(e) =>
+                  setProfile((prevState) => {
+                    return { ...prevState, password: e.target.value };
+                  })
+                }
+              />
+            </div>
+            <Button type="submit" className="w-full">
+              Save
+            </Button>
+          </form>
         </div>
       </Layout>
     </>
