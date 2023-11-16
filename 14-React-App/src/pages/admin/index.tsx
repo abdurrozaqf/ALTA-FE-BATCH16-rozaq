@@ -5,19 +5,9 @@ import { FilePlus2, Pencil, Trash2 } from "lucide-react";
 
 import EditBookForm from "@/components/form/EditBookForm";
 import AddBookForm from "@/components/form/AddBookForm";
+import { useToast } from "@/components/ui/use-toast";
 import Layout from "@/components/layout";
 import Alert from "@/components/alert";
-
-import {
-  AlertDialog,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 
 import {
   Table,
@@ -31,6 +21,7 @@ import {
 
 const Admin = () => {
   const [books, setBooks] = useState<Book[]>([]);
+  const { toast } = useToast();
 
   useEffect(() => {
     fetchData();
@@ -41,47 +32,46 @@ const Admin = () => {
       const result = await getBooks();
       setBooks(result.payload.datas);
     } catch (error: any) {
-      alert(error.toString());
+      toast({
+        title: "Oops! Something went wrong.",
+        description: error.toString(),
+        variant: "destructive",
+      });
     }
   }
 
   async function handleDeleteBook() {
     try {
-      const result = await deleteBook("1");
-      alert(result.message);
+      const result = await deleteBook(`1`);
+      toast({ description: result.message });
     } catch (error: any) {
-      alert(error.toString());
+      toast({
+        title: "Oops! Something went wrong.",
+        description: error.toString(),
+        variant: "destructive",
+      });
     }
   }
 
   return (
     <>
       <Layout title="List of Books">
-        <AlertDialog>
-          <AlertDialogTrigger>
-            <div className="px-10 py-3 bg-white text-gray-600 rounded-full shadow-md border hover:text-white hover:bg-indigo-400 bottom-24 z-50 absolute">
-              <FilePlus2 size={"3rem"} />
-            </div>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Add Books</AlertDialogTitle>
-              <AlertDialogDescription>
-                <AddBookForm />
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+        <Alert title="Add Books" description={<AddBookForm />}>
+          <div className="px-10 py-3 bg-white text-gray-600 rounded-full shadow-md border hover:text-white hover:bg-indigo-400 bottom-24 z-40 absolute">
+            <FilePlus2 size={"3rem"} />
+          </div>
+        </Alert>
+
         <Table>
           <TableCaption>A list of books.</TableCaption>
           <TableHeader>
             <TableRow>
               <TableHead className="w-[100px] text-center">Cover</TableHead>
               <TableHead>Title</TableHead>
+              <TableHead>Author</TableHead>
               <TableHead>Category</TableHead>
+              <TableHead>ISBN</TableHead>
+              <TableHead>Featured</TableHead>
               <TableHead className="text-right">Action</TableHead>
             </TableRow>
           </TableHeader>
@@ -98,31 +88,25 @@ const Admin = () => {
                 </TableCell>
                 <TableCell>
                   <p>{book.title}</p>
+                </TableCell>
+                <TableCell>
                   <p>{book.author}</p>
                 </TableCell>
                 <TableCell>
                   <p>{book.category}</p>
+                </TableCell>
+                <TableCell>
                   <p>{book.isbn}</p>
                 </TableCell>
+                <TableCell>
+                  <p>{book.featured.toString()}</p>
+                </TableCell>
                 <TableCell className="flex justify-end gap-3 mt-5">
-                  <AlertDialog>
-                    <AlertDialogTrigger>
-                      <div className="p-3 bg-white rounded-md shadow-md hover:bg-indigo-100">
-                        <Pencil />
-                      </div>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>Edit Books</AlertDialogTitle>
-                        <AlertDialogDescription>
-                          <EditBookForm />
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
+                  <Alert title="Edit Book" description={<EditBookForm />}>
+                    <div className="p-3 bg-white rounded-md shadow-md hover:bg-indigo-100">
+                      <Pencil />
+                    </div>
+                  </Alert>
 
                   <Alert
                     title="Are you absolutely sure deleted this book?"

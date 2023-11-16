@@ -1,6 +1,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import { Trash2 } from "lucide-react";
 
+import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Layout from "@/components/layout";
@@ -12,8 +13,12 @@ import {
   getProfile,
   updateProfile,
 } from "@/utils/apis/users";
+import { useNavigate } from "react-router-dom";
 
 const EditProfile = () => {
+  const { toast } = useToast();
+  const navigate = useNavigate();
+
   const [profile, setProfile] = useState<Partial<User>>({
     full_name: "",
     email: "",
@@ -31,7 +36,11 @@ const EditProfile = () => {
       const result = await getProfile();
       setProfile(result.payload);
     } catch (error: any) {
-      alert(error.toString());
+      toast({
+        title: "Oops! Something went wrong.",
+        description: error.toString(),
+        variant: "destructive",
+      });
     }
   }
 
@@ -47,18 +56,28 @@ const EditProfile = () => {
 
     try {
       const result = await updateProfile(body);
-      alert(result.message);
+      toast({ description: result.message });
+
+      navigate("/profile");
     } catch (error: any) {
-      alert(error.toString());
+      toast({
+        title: "Oops! Something went wrong.",
+        description: error.toString(),
+        variant: "destructive",
+      });
     }
   }
 
   async function handleDeleteProfile() {
     try {
       const result = await deleteProfile();
-      alert(result.message);
+      toast({ description: result.message });
     } catch (error: any) {
-      alert(error.toString());
+      toast({
+        title: "Oops! Something went wrong.",
+        description: error.toString(),
+        variant: "destructive",
+      });
     }
   }
 
@@ -81,8 +100,8 @@ const EditProfile = () => {
             </Alert>
           </div>
           <img
-            src={profile.profile_picture}
-            alt={profile.full_name}
+            src={profile.profile_picture || "https://github.com/shadcn.png"}
+            alt={profile.full_name || "Guest"}
             className="w-32 h-32 rounded-full"
           />
           <form

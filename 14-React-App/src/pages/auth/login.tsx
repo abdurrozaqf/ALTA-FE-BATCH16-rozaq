@@ -1,12 +1,17 @@
-import Logo from "@/assets/logo-1.svg";
-
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Link, useNavigate } from "react-router-dom";
 import { FormEvent, useState } from "react";
 import { Login } from "@/utils/apis/auth";
-import { Link } from "react-router-dom";
+import Logo from "@/assets/logo-1.svg";
+
+import { useToast } from "@/components/ui/use-toast";
+import { Toaster } from "@/components/ui/toaster";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 const LoginAccount = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -20,15 +25,21 @@ const LoginAccount = () => {
 
       const result = await Login(body);
       localStorage.setItem("token", result.payload.token);
-      alert(result.message);
+      toast({ description: result.message });
+
+      navigate("/");
     } catch (error: any) {
-      alert(error.toString());
+      toast({
+        title: "Oops! Something went wrong.",
+        description: error.toString(),
+        variant: "destructive",
+      });
     }
   }
 
   return (
-    <div className="w-full h-screen flex items-center justify-center background-page">
-      <div className="container w-[556px] flex flex-col items-center bg-white rounded-md px-14 pt-10 pb-20 shadow-xl">
+    <div className="w-full h-screen flex items-center font-inter overflow-auto bg-gradient-to-br from-indigo-300 to-indigo-100">
+      <div className="container w-[556px] flex flex-col items-center bg-white rounded-md py-20 px-14 shadow-xl">
         <img src={Logo} alt="Logo" className="mb-10" />
         <p className="mb-4 text-[#4D4D4D] text-xl font-normal ">
           Welcome Back !
@@ -64,20 +75,21 @@ const LoginAccount = () => {
           or
         </div>
         <div className="w-full flex items-center justify-between">
-          <p className="text-center text-sm text-gray-600 mt-2">
+          <p className="text-center text-sm text-gray-600">
             New User? &nbsp;
-            <Link to={"/register"} className="text-blue-500 hover:underline">
+            <Link to="/register" className="text-blue-500 hover:underline">
               Register Here
             </Link>
           </p>
           <Link
-            to={"/home"}
-            className="text-center text-sm text-gray-600 mt-2 hover:text-blue-500"
+            to="/"
+            className="text-center text-sm text-gray-600 hover:text-blue-500"
           >
             Use as Guest
           </Link>
         </div>
       </div>
+      <Toaster />
     </div>
   );
 };

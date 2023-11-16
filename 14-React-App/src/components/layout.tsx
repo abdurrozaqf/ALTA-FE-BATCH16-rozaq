@@ -1,15 +1,17 @@
+import Sidebar, { SidebarItem } from "@/components/sidebar";
 import { Link } from "react-router-dom";
-
-import Navbar from "./navbar";
 import { ReactNode } from "react";
-import Sidebar, { SidebarItem } from "./sidebar";
+
+import { Toaster } from "@/components/ui/toaster";
+import Navbar from "@/components/navbar";
+
 import {
+  LayoutDashboard,
   ClipboardEdit,
   LibraryBig,
   History,
   LogIn,
-  LayoutDashboard,
-  BookOpenText,
+  LogOut,
 } from "lucide-react";
 
 interface Props {
@@ -21,31 +23,31 @@ const Layout = (props: Readonly<Props>) => {
   const { children, title } = props;
 
   return (
-    <div className="w-full h-screen flex background-page py-12 px-9 relative">
-      <div className="2xl:container 2xl:px-0 w-full flex mx-auto shadow rounded-md overflow-auto">
+    <div className="w-full h-screen flex py-12 px-9 font-inter overflow-auto bg-gradient-to-br from-indigo-300 to-indigo-100">
+      <div className="container flex px-0 shadow rounded-xl overflow-auto">
         <Sidebar>
           <div className="h-full flex flex-col justify-between">
             <div>
-              <Link to="/home">
+              <Link to="/">
                 <SidebarItem icon={<LayoutDashboard />} text="Home" />
               </Link>
               <Link to="/list-book">
                 <SidebarItem icon={<LibraryBig />} text="List of Books" />
-              </Link>
-              <Link to="/detail-book">
-                <SidebarItem icon={<BookOpenText />} text="Detail Book" />
               </Link>
               <Link to="/history-borrow">
                 <SidebarItem icon={<History />} text="History Borrow" />
               </Link>
             </div>
             <div>
-              <Link to={"/"}>
+              <Link to={"/login"}>
                 <SidebarItem icon={<LogIn />} text="Login" />
               </Link>
               <Link to={"/register"}>
                 <SidebarItem icon={<ClipboardEdit />} text="Register" />
               </Link>
+              {/* <Link to={"/login"}>
+                <SidebarItem icon={<LogOut color="red" />} text="Logout" />
+              </Link> */}
             </div>
           </div>
         </Sidebar>
@@ -53,6 +55,7 @@ const Layout = (props: Readonly<Props>) => {
           <Navbar title={title} />
           <div className="overflow-auto px-11 py-6">{children}</div>
         </div>
+        <Toaster />
       </div>
     </div>
   );

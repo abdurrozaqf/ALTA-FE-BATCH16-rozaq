@@ -1,9 +1,14 @@
-import { createBook } from "@/utils/apis/books";
 import { FormEvent, useState } from "react";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
+
+import { createBook } from "@/utils/apis/books";
+
+import { useToast } from "@/components/ui/use-toast";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 const AddBookForm = () => {
+  const { toast } = useToast();
+
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [isbn, setIsbn] = useState("");
@@ -22,9 +27,15 @@ const AddBookForm = () => {
       };
 
       const result = await createBook(body);
-      alert(result.message);
+      toast({
+        description: result.message,
+      });
     } catch (error: any) {
-      alert(error.toString());
+      toast({
+        title: "Oops! Something went wrong.",
+        description: error.toString(),
+        variant: "destructive",
+      });
     }
   }
 

@@ -1,9 +1,8 @@
-import { Borrow, getBorrows } from "@/utils/apis/borrow";
+import { Borrow, deleteBorrow, getBorrows } from "@/utils/apis/borrow";
 import { Pencil, Trash2 } from "lucide-react";
 import { useState, useEffect } from "react";
 
-import EditBookForm from "@/components/form/EditBookForm";
-import { deleteBook } from "@/utils/apis/books";
+import { useToast } from "@/components/ui/use-toast";
 import Layout from "@/components/layout";
 import Alert from "@/components/alert";
 
@@ -16,19 +15,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
-import {
-  AlertDialog,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import EditBorrowBookForm from "@/components/form/EditBorrowBookForm";
 
 const AdminListBorrow = () => {
+  const { toast } = useToast();
+
   const [borrow, setBorrow] = useState<Borrow[]>([]);
 
   useEffect(() => {
@@ -40,16 +31,24 @@ const AdminListBorrow = () => {
       const result = await getBorrows();
       setBorrow(result.payload.datas);
     } catch (error: any) {
-      alert(error.toString());
+      toast({
+        title: "Oops! Something went wrong.",
+        description: error.toString(),
+        variant: "destructive",
+      });
     }
   }
 
-  async function handleDeleteBook() {
+  async function handleDeleteBorrow() {
     try {
-      const result = await deleteBook("1");
-      alert(result.message);
+      const result = await deleteBorrow(`1`);
+      toast({ description: result.message });
     } catch (error: any) {
-      alert(error.toString());
+      toast({
+        title: "Oops! Something went wrong.",
+        description: error.toString(),
+        variant: "destructive",
+      });
     }
   }
 
@@ -60,50 +59,46 @@ const AdminListBorrow = () => {
           <TableCaption>List of Borrows.</TableCaption>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[100px] text-center">Cover</TableHead>
+              <TableHead>User</TableHead>
               <TableHead>Title</TableHead>
-              <TableHead className="text-right">Action</TableHead>
+              <TableHead>Borrow Date</TableHead>
+              <TableHead>Due Date</TableHead>
+              <TableHead>Return Date</TableHead>
+              <TableHead className="w-[100px] text-center">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {borrow.map((borrow) => (
               <TableRow key={borrow.id}>
                 <TableCell>
-                  <img
-                    src={borrow.book.cover_image}
-                    alt={borrow.book.title}
-                    className="h-24 w-20 object-fit"
-                  />
+                  <p>{borrow.user.full_name}</p>
                 </TableCell>
+
                 <TableCell>
                   <p>{borrow.book.title}</p>
                 </TableCell>
-                <TableCell className="flex items-center justify-end gap-3">
-                  <AlertDialog>
-                    <AlertDialogTrigger>
-                      <div className="p-3 bg-white rounded-md shadow-md hover:bg-indigo-100">
-                        <Pencil />
-                      </div>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>Edit Books</AlertDialogTitle>
-                        <AlertDialogDescription>
-                          <EditBookForm />
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
+                <TableCell>
+                  <p>{borrow.borrow_date}</p>
+                </TableCell>
+                <TableCell>
+                  <p>{borrow.due_date}</p>
+                </TableCell>
+                <TableCell>
+                  <p>{borrow.return_date}</p>
+                </TableCell>
+                <TableCell className="flex items-center justify-center gap-2">
+                  <Alert title="Edit Book" description={<EditBorrowBookForm />}>
+                    <div className="p-3 bg-white rounded-md shadow-md hover:bg-indigo-100">
+                      <Pencil />
+                    </div>
+                  </Alert>
 
                   <Alert
                     title="Are you absolutely sure deleted this book?"
                     description="This action cannot be undone. This will permanently
                           delete your book and remove your data from our
                           servers."
-                    onAction={handleDeleteBook}
+                    onAction={handleDeleteBorrow}
                   >
                     <div className="p-3 bg-white rounded-md shadow-md hover:bg-indigo-400 hover:text-white">
                       <Trash2 />

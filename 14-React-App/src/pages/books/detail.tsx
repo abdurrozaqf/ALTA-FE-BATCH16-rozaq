@@ -1,11 +1,19 @@
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+
 import { Book, getDetailBook } from "@/utils/apis/books";
+import { createBorrow } from "@/utils/apis/borrow";
+
 import { Separator } from "@/components/ui/separator";
+import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { useEffect, useState } from "react";
 import Layout from "@/components/layout";
 
 const Detail = () => {
+  const params = useParams();
+  const { toast } = useToast();
+
   const [book, setBook] = useState<Book>();
 
   useEffect(() => {
@@ -14,10 +22,37 @@ const Detail = () => {
 
   async function fetchData() {
     try {
-      const result = await getDetailBook("1");
+      const result = await getDetailBook(params.id_book!);
       setBook(result.payload);
     } catch (error: any) {
-      alert(error.toString());
+      toast({
+        title: "Oops! Something went wrong.",
+        description: error.toString(),
+        variant: "destructive",
+      });
+    }
+  }
+
+  async function handleBorrowBook() {
+    let today = new Date();
+    let isoDateString = today.toISOString();
+
+    try {
+      const body = {
+        bookId: [book?.id!],
+        borrow_date: isoDateString,
+      };
+
+      const result = await createBorrow(body);
+      toast({
+        description: result.message,
+      });
+    } catch (error: any) {
+      toast({
+        title: "Oops! Something went wrong.",
+        description: error.toString(),
+        variant: "destructive",
+      });
     }
   }
 
@@ -41,7 +76,7 @@ const Detail = () => {
           <p className="text-muted-foreground text-sm text-justify">
             {book?.description}
           </p>
-          <Button>Borrow</Button>
+          <Button onClick={handleBorrowBook}>Borrow</Button>
         </div>
       </div>
     </Layout>

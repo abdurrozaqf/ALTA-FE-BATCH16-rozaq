@@ -1,12 +1,17 @@
-import Logo from "@/assets/logo-1.svg";
-
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Link, useNavigate } from "react-router-dom";
 import { Register } from "@/utils/apis/auth";
 import { FormEvent, useState } from "react";
-import { Link } from "react-router-dom";
+import Logo from "@/assets/logo-1.svg";
+
+import { useToast } from "@/components/ui/use-toast";
+import { Toaster } from "@/components/ui/toaster";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 const RegisterAccount = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -26,18 +31,24 @@ const RegisterAccount = () => {
       };
 
       const result = await Register(body);
-      alert(result.message);
+      toast({ description: result.message });
+
+      navigate("/login");
     } catch (error: any) {
-      alert(error.toString());
+      toast({
+        title: "Oops! Something went wrong.",
+        description: error.toString(),
+        variant: "destructive",
+      });
     }
   }
 
   return (
-    <div className="w-full h-screen flex items-center justify-center background-page">
-      <div className="container w-[556px] flex flex-col items-center  bg-white rounded-md px-14 pt-10 pb-20 shadow-xl">
+    <div className="w-full h-screen flex items-center font-inter overflow-auto bg-gradient-to-br from-indigo-300 to-indigo-100">
+      <div className="container h-fit w-[34.75rem] flex flex-col items-center  bg-white rounded-md px-14 py-10 shadow-xl">
         <img src={Logo} alt="Logo" className="mb-10" />
-        <p className="mb-4 text-[#4D4D4D] text-xl font-normal ">Registration</p>
-        <p className="mb-11 text-[#ABABAB] text-base font-normal">
+        <p className="mb-2 text-[#4D4D4D] text-xl font-normal ">Registration</p>
+        <p className="mb-6 text-[#ABABAB] text-base font-normal">
           For both Admin & Users
         </p>
         <form
@@ -84,7 +95,7 @@ const RegisterAccount = () => {
             <p className="font-semibold">Phone Number</p>
             <Input
               placeholder="Phone Number"
-              type="number"
+              type="tel"
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
             />
@@ -95,20 +106,21 @@ const RegisterAccount = () => {
           or
         </div>
         <div className="w-full flex items-center justify-between">
-          <p className="text-center text-sm text-gray-600 mt-2">
+          <p className="text-center text-sm text-gray-600">
             Already a User?&nbsp;
-            <Link to={"/"} className="text-blue-500 hover:underline">
+            <Link to="/login" className="text-blue-500 hover:underline">
               Login now
             </Link>
           </p>
           <Link
-            to={"/home"}
-            className="text-center text-sm text-gray-600 mt-2 hover:text-blue-500"
+            to="/"
+            className="text-center text-sm text-gray-600 hover:text-blue-500"
           >
             Use as Guest
           </Link>
         </div>
       </div>
+      <Toaster />
     </div>
   );
 };

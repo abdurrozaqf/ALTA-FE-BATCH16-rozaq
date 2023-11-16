@@ -15,7 +15,7 @@ import {
 type Props = {
   title?: string;
   children: ReactNode;
-  description?: string;
+  description?: string | any;
   onCancel?: () => {};
   onAction?: () => {};
 };

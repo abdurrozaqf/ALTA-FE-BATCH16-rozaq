@@ -1,9 +1,14 @@
-import { Book, updateBook } from "@/utils/apis/books";
 import { FormEvent, useState } from "react";
-import { Input } from "@/components/ui/input";
+
+import { Book, updateBook } from "@/utils/apis/books";
+
+import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 const EditBookForm = () => {
+  const { toast } = useToast();
+
   const [book, setBook] = useState<Partial<Book>>({
     title: "",
     author: "",
@@ -23,10 +28,16 @@ const EditBookForm = () => {
     };
 
     try {
-      const result = await updateBook("1", body);
-      alert(result.message);
+      const result = await updateBook(`1`, body);
+      toast({
+        description: result.message,
+      });
     } catch (error: any) {
-      alert(error.toString());
+      toast({
+        title: "Oops! Something went wrong.",
+        description: error.toString(),
+        variant: "destructive",
+      });
     }
   }
 

@@ -8,7 +8,7 @@ const BookCardHistory = (props: Props) => {
   const { data } = props;
 
   return (
-    <div className="bg-white p-4 rounded-lg flex flex-col gap-2 w-fit h-full hover:bg-indigo-50 hover:border">
+    <div className="bg-white p-4 rounded-lg flex flex-col gap-2 w-fit h-full shadow">
       <figure className="overflow-hidden shadow shadow-neutral-300 rounded-lg">
         <img
           className="h-auto w-auto object-cover aspect-[3/4]"
