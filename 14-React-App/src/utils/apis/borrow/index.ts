@@ -1,5 +1,5 @@
-import { getBorrows, createBorrow } from "./api";
+import { getBorrows, createBorrow, updateBorrow, deleteBorrow } from "./api";
 import { Borrow } from "./types";
 
-export { getBorrows, createBorrow };
+export { getBorrows, createBorrow, updateBorrow, deleteBorrow };
 export type { Borrow };
