@@ -9,7 +9,7 @@ import DetailBook from "@/pages/books/detail";
 import HistoryBorrow from "@/pages/profile/history-borrow";
 import ProfileAccount from "@/pages/profile/index";
 import EditProfile from "@/pages/profile/edit-profile";
-import Admin from "@/pages/admin/index";
+import AdminDashboard from "@/pages/admin/index";
 import AdminListBorrow from "@/pages/admin/list-borrow-book";
 
 export default function Router() {
@@ -50,8 +50,8 @@ export default function Router() {
           element: <EditProfile />,
         },
         {
-          path: "/admin",
-          element: <Admin />,
+          path: "/admin-dashboard",
+          element: <AdminDashboard />,
         },
         {
           path: "/admin-list-borrow",
