@@ -34,7 +34,9 @@ const Alert = (props: Props) => {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel onClick={onCancel}>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={onAction}>Continue</AlertDialogAction>
+            {onAction && (
+              <AlertDialogAction onClick={onAction}>Continue</AlertDialogAction>
+            )}
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

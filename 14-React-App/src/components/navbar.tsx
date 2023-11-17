@@ -1,8 +1,13 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { ChevronDown, LogOut, UserCircle2, UserCog } from "lucide-react";
-import { User, getProfile } from "@/utils/apis/users";
+import {
+  ChevronDown,
+  ClipboardEdit,
+  LogIn,
+  LogOut,
+  UserCircle2,
+  UserCog,
+} from "lucide-react";
 import Logo from "@/assets/logo-1.svg";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -16,31 +21,23 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+import { useToken } from "@/utils/context/token";
+
 interface Props {
-  title?: string;
+  title?: string | any;
 }
 
 const Navbar = (props: Props) => {
   const { title } = props;
   const { toast } = useToast();
 
-  const [profile, setProfile] = useState<User>();
+  const { token, user, changeToken } = useToken();
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  async function fetchData() {
-    try {
-      const result = await getProfile();
-      setProfile(result.payload);
-    } catch (error: any) {
-      toast({
-        title: "Oops! Something went wrong.",
-        description: error.toString(),
-        variant: "destructive",
-      });
-    }
+  function handleLogout() {
+    changeToken();
+    toast({
+      description: "Logout Successfully",
+    });
   }
 
   return (
@@ -48,64 +45,96 @@ const Navbar = (props: Props) => {
       <Link to="/">
         <img src={Logo} alt="Logo" className="w-[4rem]" />
       </Link>
-      <p className="mb-4 text-2xl font-semibold leading-none mt-3">{title}</p>
+      <p className="mb-4 text-2xl font-semibold tracking-wider leading-none mt-3">
+        {title}
+      </p>
       <DropdownMenu>
         <DropdownMenuTrigger className="flex gap-x-4 items-center p-1 bg-white rounded-full shadow">
           <Avatar>
-            <AvatarImage src={profile?.profile_picture || ""} />
+            <AvatarImage
+              src={user?.profile_picture}
+              alt={user?.full_name ?? "Guest"}
+            />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
-          <p>{profile?.full_name || "Guest"}</p>
+          <p>{user?.full_name ?? "Guest"}</p>
           <ChevronDown />
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-48 mt-4" align="end">
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem asChild>
-            <Link
-              to={"/profile"}
-              className="w-full flex justify-between cursor-pointer"
-            >
-              <p>Profile</p>
-              <UserCircle2 strokeWidth={"1px"} size={"1.2rem"} />
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link
-              to={"/edit-profile"}
-              className="w-full flex justify-between cursor-pointer"
-            >
-              <p>Edit Profile</p>
-              <UserCog strokeWidth={"1px"} size={"1.2rem"} />
-            </Link>
-          </DropdownMenuItem>
-
-          <DropdownMenuSeparator />
-          <DropdownMenuItem asChild>
-            <Link
-              className="w-full flex justify-between cursor-pointer"
-              to="/admin"
-            >
-              Admin List of Books
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link
-              className="w-full flex justify-between cursor-pointer"
-              to="/admin-list-borrow"
-            >
-              Admin List of Borrows
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem asChild>
-            <Link
-              className="w-full flex justify-between cursor-pointer text-red-500"
-              to="/login"
-            >
-              Logout <LogOut strokeWidth={"1px"} size={"1.2rem"} color="red" />
-            </Link>
-          </DropdownMenuItem>
+          {token && (
+            <>
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <Link
+                  to={"/profile"}
+                  className="w-full flex justify-between cursor-pointer"
+                >
+                  Profile
+                  <UserCircle2 strokeWidth={"1px"} size={"1.2rem"} />
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link
+                  to={"/edit-profile"}
+                  className="w-full flex justify-between cursor-pointer"
+                >
+                  Edit Profile
+                  <UserCog strokeWidth={"1px"} size={"1.2rem"} />
+                </Link>
+              </DropdownMenuItem>
+              {user.role === "admin" && (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    <Link
+                      className="w-full flex justify-between cursor-pointer"
+                      to="/admin-dashboard"
+                    >
+                      Admin Dashboard
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link
+                      className="w-full flex justify-between cursor-pointer"
+                      to="/admin-list-borrow"
+                    >
+                      Admin List of Borrows
+                    </Link>
+                  </DropdownMenuItem>
+                </>
+              )}
+            </>
+          )}
+          {token ? (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => handleLogout()}>
+                <Link
+                  to="/login"
+                  className="w-full flex justify-between text-red-600"
+                >
+                  Logout
+                  <LogOut strokeWidth={"1px"} size={"1.2rem"} color="red" />
+                </Link>
+              </DropdownMenuItem>
+            </>
+          ) : (
+            <>
+              <DropdownMenuItem>
+                <Link className="w-full flex justify-between " to="/login">
+                  Login
+                  <LogIn strokeWidth={"1px"} size={"1.2rem"} />
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link className="w-full flex justify-between " to="/register">
+                  Register
+                  <ClipboardEdit strokeWidth={"1px"} size={"1.2rem"} />
+                </Link>
+              </DropdownMenuItem>
+            </>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
