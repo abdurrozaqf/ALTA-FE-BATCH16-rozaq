@@ -1,8 +1,8 @@
 import { Response } from "@/utils/types/api";
-import { authLogin, authRegister } from "./types";
+import { LoginSchema, RegisterSchema } from "./types";
 import axiosWithConfig from "../axiosWithConfig";
 
-export const Register = async (body: authRegister) => {
+export const Register = async (body: RegisterSchema) => {
   try {
     const response = await axiosWithConfig.post(
       "https://hells-kitchen.onrender.com/api/v1/register",
@@ -15,7 +15,7 @@ export const Register = async (body: authRegister) => {
   }
 };
 
-export const Login = async (body: authLogin) => {
+export const Login = async (body: LoginSchema) => {
   try {
     const response = await axiosWithConfig.post(
       "https://hells-kitchen.onrender.com/api/v1/login",
