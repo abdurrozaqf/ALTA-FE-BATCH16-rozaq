@@ -37,7 +37,7 @@ const Home = () => {
           </p>
           <Link
             to="/list-book"
-            className="text-[#4D4D4D] text-sm font-normal hover:text-black mb-3"
+            className="text-[#4D4D4D] text-sm font-normal hover:font-medium hover:text-black mb-3"
           >
             View All
           </Link>
