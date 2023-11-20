@@ -1,132 +1,164 @@
-"use client";
-
-import { useForm } from "react-hook-form";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../ui/form";
-import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
-const FormSchema = z
-  .object({
-    username: z.string().min(1, "Username is required").max(100),
-    email: z.string().min(1, "Email is required").email("Invalid email"),
-    password: z
-      .string()
-      .min(1, "Password is required")
-      .min(8, "Password must have than 8 characters"),
-    confirmPassword: z.string().min(1, "Password confirmation is required"),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    path: ["confirmPassword"],
-    message: "Password do not match",
-  });
+import { Register, RegisterSchema, registerSchema } from "@/utils/apis/auth";
+
+import { CustomFormField } from "@/components/form/CustomForm";
+import { useToast } from "@/components/ui/use-toast";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
+
+import { Loader2 } from "lucide-react";
 
 const SignUpForm = () => {
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const form = useForm<RegisterSchema>({
+    resolver: zodResolver(registerSchema),
     defaultValues: {
-      username: "",
+      full_name: "",
       email: "",
       password: "",
-      confirmPassword: "",
+      repassword: "",
+      address: "",
+      phone_number: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof FormSchema>) => {
-    console.log(values);
-  };
+  async function onSubmit(data: RegisterSchema) {
+    try {
+      const result = await Register(data);
+      toast({ description: result.message });
+
+      navigate("/login");
+    } catch (error: any) {
+      toast({
+        title: "Oops! Something went wrong.",
+        description: error.toString(),
+        variant: "destructive",
+      });
+    }
+  }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
-        <div className="space-y-2">
-          <FormField
-            control={form.control}
-            name="username"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Username</FormLabel>
-                <FormControl>
-                  <Input placeholder="johndoe" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email ID</FormLabel>
-                <FormControl>
-                  <Input placeholder="mail@example.com" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input
-                    type="password"
-                    placeholder="Enter your password"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="confirmPassword"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Confirm Password</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Re-Enter your password"
-                    type="password"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        <Button className="w-full mt-6" type="submit">
-          Register
+      <form
+        className="w-full flex flex-col gap-2"
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
+        <CustomFormField
+          control={form.control}
+          name="full_name"
+          label="Full Name"
+        >
+          {(field) => (
+            <Input
+              {...field}
+              placeholder="Full Name"
+              type="text"
+              disabled={form.formState.isSubmitting}
+              aria-disabled={form.formState.isSubmitting}
+            />
+          )}
+        </CustomFormField>
+        <CustomFormField control={form.control} name="email" label="Email">
+          {(field) => (
+            <Input
+              {...field}
+              placeholder="name@mail.com"
+              type="email"
+              disabled={form.formState.isSubmitting}
+              aria-disabled={form.formState.isSubmitting}
+            />
+          )}
+        </CustomFormField>
+        <CustomFormField
+          control={form.control}
+          name="password"
+          label="Password"
+        >
+          {(field) => (
+            <Input
+              {...field}
+              placeholder="Password"
+              type="password"
+              disabled={form.formState.isSubmitting}
+              aria-disabled={form.formState.isSubmitting}
+            />
+          )}
+        </CustomFormField>
+        <CustomFormField
+          control={form.control}
+          name="repassword"
+          label="Confirm Password"
+        >
+          {(field) => (
+            <Input
+              {...field}
+              placeholder="Confirm Password"
+              type="password"
+              disabled={form.formState.isSubmitting}
+              aria-disabled={form.formState.isSubmitting}
+            />
+          )}
+        </CustomFormField>
+        <CustomFormField control={form.control} name="address" label="Address">
+          {(field) => (
+            <Input
+              {...field}
+              placeholder="Address"
+              type="text"
+              disabled={form.formState.isSubmitting}
+              aria-disabled={form.formState.isSubmitting}
+            />
+          )}
+        </CustomFormField>
+        <CustomFormField
+          control={form.control}
+          name="phone_number"
+          label="Phone Number"
+        >
+          {(field) => (
+            <Input
+              {...field}
+              placeholder="Phone Number"
+              type="tel"
+              disabled={form.formState.isSubmitting}
+              aria-disabled={form.formState.isSubmitting}
+            />
+          )}
+        </CustomFormField>
+        <Button
+          className="mt-4"
+          type="submit"
+          disabled={form.formState.isSubmitting}
+          aria-disabled={form.formState.isSubmitting}
+        >
+          {form.formState.isSubmitting ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
+            </>
+          ) : (
+            "Register"
+          )}
         </Button>
       </form>
       <div className="mx-auto my-4 flex w-full items-center justify-evenly before:mr-4 before:block before:h-px before:flex-grow before:bg-stone-400 after:ml-4 after:block after:h-px after:flex-grow after:bg-stone-400">
         or
       </div>
       <div className="w-full flex items-center justify-between">
-        <p className="text-center text-sm text-gray-600 mt-2">
+        <p className="text-center text-sm text-gray-600">
           Already a User?&nbsp;
-          <Link to={"/"} className="text-blue-500 hover:underline">
+          <Link to="/login" className="text-blue-500 hover:underline">
             Login now
           </Link>
         </p>
         <Link
-          to={"/home"}
-          className="text-center text-sm text-gray-600 mt-2 hover:text-blue-500"
+          to="/"
+          className="text-center text-sm text-gray-600 hover:text-blue-500"
         >
           Use as Guest
         </Link>

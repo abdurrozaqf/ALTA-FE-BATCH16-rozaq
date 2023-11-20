@@ -1,99 +1,107 @@
-"use client";
-
-import { useForm } from "react-hook-form";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../ui/form";
-import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
-const FormSchema = z.object({
-  email: z.string().min(1, "Email is required").email("Invalid email"),
-  password: z
-    .string()
-    .min(1, "Password is required")
-    .min(8, "Password mush have than 8 characters "),
-});
+import { Login, LoginSchema, loginSchema } from "@/utils/apis/auth";
+import { useToken } from "@/utils/context/token";
+
+import { CustomFormField } from "@/components/form/CustomForm";
+import { useToast } from "@/components/ui/use-toast";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
+
+import { Loader2 } from "lucide-react";
 
 const SignInForm = () => {
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const { toast } = useToast();
+  const navigate = useNavigate();
+  const { changeToken } = useToken();
+
+  const form = useForm<LoginSchema>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof FormSchema>) => {
-    console.log(values);
-  };
+  async function onSubmit(data: LoginSchema) {
+    try {
+      const result = await Login(data);
+      changeToken(result.payload.token);
+      toast({ description: result.message });
+
+      navigate("/");
+    } catch (error: any) {
+      toast({
+        title: "Oops! Something went wrong.",
+        description: error.toString(),
+        variant: "destructive",
+      });
+    }
+  }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
-        <div className="space-y-2">
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input placeholder="email@example.com" {...field} />
-                </FormControl>
-                {/* <FormDescription>
-                This is your public display name.
-              </FormDescription> */}
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Enter your password"
-                    type="password"
-                    {...field}
-                  />
-                </FormControl>
-                {/* <FormDescription>
-                This is your public display name.
-              </FormDescription> */}
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        <Button className="w-full mt-4" type="submit">
-          Login
+      <form
+        className="w-full flex flex-col gap-4"
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
+        <CustomFormField control={form.control} name="email" label="Email">
+          {(field) => (
+            <Input
+              {...field}
+              placeholder="name@mail.com"
+              type="email"
+              disabled={form.formState.isSubmitting}
+              aria-disabled={form.formState.isSubmitting}
+            />
+          )}
+        </CustomFormField>
+        <CustomFormField
+          control={form.control}
+          name="password"
+          label="Password"
+        >
+          {(field) => (
+            <Input
+              {...field}
+              placeholder="Password"
+              type="password"
+              disabled={form.formState.isSubmitting}
+              aria-disabled={form.formState.isSubmitting}
+            />
+          )}
+        </CustomFormField>
+        <Button
+          className="mt-4"
+          type="submit"
+          disabled={form.formState.isSubmitting}
+          aria-disabled={form.formState.isSubmitting}
+        >
+          {form.formState.isSubmitting ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
+            </>
+          ) : (
+            "Login"
+          )}
         </Button>
       </form>
       <div className="mx-auto my-4 flex w-full items-center justify-evenly before:mr-4 before:block before:h-px before:flex-grow before:bg-stone-400 after:ml-4 after:block after:h-px after:flex-grow after:bg-stone-400">
         or
       </div>
       <div className="w-full flex items-center justify-between">
-        <p className="text-center text-sm text-gray-600 mt-2">
+        <p className="text-center text-sm text-gray-600">
           New User? &nbsp;
-          <Link to={"/register"} className="text-blue-500 hover:underline">
+          <Link to="/register" className="text-blue-500 hover:underline">
             Register Here
           </Link>
         </p>
         <Link
-          to={"/home"}
-          className="text-center text-sm text-gray-600 mt-2 hover:text-blue-500"
+          to="/"
+          className="text-center text-sm text-gray-600 hover:text-blue-500"
         >
           Use as Guest
         </Link>
