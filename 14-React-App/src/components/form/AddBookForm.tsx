@@ -1,9 +1,3 @@
-import {
-  BookPayloadSchema,
-  bookPayloadSchema,
-  createBook,
-} from "@/utils/apis/books";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import { CustomFormField } from "@/components/form/CustomForm";
@@ -21,6 +15,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import {
+  BookPayloadSchema,
+  bookPayloadSchema,
+  createBook,
+} from "@/utils/apis/books";
+
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 
 const AddBookForm = () => {
@@ -81,6 +82,7 @@ const AddBookForm = () => {
             <Input
               {...fileRef}
               type="file"
+              accept="image/jpg, image/jpeg, image/png"
               disabled={form.formState.isSubmitting}
               aria-disabled={form.formState.isSubmitting}
             />
