@@ -137,8 +137,6 @@ const EditProfile = () => {
                   />
                 )}
               </CustomFormField>
-
-              {/* IMAGES */}
               <CustomFormField
                 control={form.control}
                 name="profile_picture"
@@ -148,6 +146,7 @@ const EditProfile = () => {
                   <Input
                     {...fileRef}
                     type="file"
+                    accept="image/jpg, image/jpeg, image/png"
                     disabled={form.formState.isSubmitting}
                     aria-disabled={form.formState.isSubmitting}
                   />
