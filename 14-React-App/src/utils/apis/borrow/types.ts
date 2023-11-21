@@ -16,11 +16,6 @@ export interface Borrow {
   };
 }
 
-export interface BorrowPayload {
-  bookId: number[];
-  borrow_date: Date;
-}
-
 export const borrowSchema = z.object({
   bookId: z.number({ required_error: "Book ID is required" }).array(),
   borrow_date: z.date({

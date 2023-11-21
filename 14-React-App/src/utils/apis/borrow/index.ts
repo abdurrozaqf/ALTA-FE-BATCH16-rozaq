@@ -1,13 +1,6 @@
-import {
-  getBorrows,
-  createBorrow,
-  updateBorrow,
-  deleteBorrow,
-  getDetailBorrow,
-} from "./api";
+import { getBorrows, createBorrow, updateBorrow, deleteBorrow } from "./api";
 import {
   Borrow,
-  BorrowPayload,
   BorrowSchema,
   UpdateBorrowSchema,
   updateBorrowSchema,
@@ -18,7 +11,6 @@ export {
   createBorrow,
   updateBorrow,
   deleteBorrow,
-  getDetailBorrow,
   updateBorrowSchema,
 };
-export type { Borrow, UpdateBorrowSchema, BorrowPayload, BorrowSchema };
+export type { Borrow, UpdateBorrowSchema, BorrowSchema };

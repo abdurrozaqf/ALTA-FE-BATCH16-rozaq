@@ -1,10 +1,5 @@
 import { PayloadPagination, Response } from "@/utils/types/api";
-import {
-  Borrow,
-  BorrowPayload,
-  BorrowSchema,
-  UpdateBorrowSchema,
-} from "./types";
+import { Borrow, BorrowSchema, UpdateBorrowSchema } from "./types";
 import axiosWithConfig from "../axiosWithConfig";
 
 export const getBorrows = async () => {
@@ -12,16 +7,6 @@ export const getBorrows = async () => {
     const response = await axiosWithConfig.get("/borrows");
 
     return response.data as Response<PayloadPagination<Borrow[]>>;
-  } catch (error: any) {
-    throw Error(error.response.data.message);
-  }
-};
-
-export const getDetailBorrow = async (id_book: string) => {
-  try {
-    const response = await axiosWithConfig.get(`/borrows/${id_book}`);
-
-    return response.data as Response<Borrow>;
   } catch (error: any) {
     throw Error(error.response.data.message);
   }
