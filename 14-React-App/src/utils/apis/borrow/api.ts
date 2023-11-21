@@ -9,9 +9,7 @@ import axiosWithConfig from "../axiosWithConfig";
 
 export const getBorrows = async () => {
   try {
-    const response = await axiosWithConfig.get(
-      "https://hells-kitchen.onrender.com/api/v1/borrows"
-    );
+    const response = await axiosWithConfig.get("/borrows");
 
     return response.data as Response<PayloadPagination<Borrow[]>>;
   } catch (error: any) {
@@ -21,9 +19,7 @@ export const getBorrows = async () => {
 
 export const getDetailBorrow = async (id_book: string) => {
   try {
-    const response = await axiosWithConfig.get(
-      `https://hells-kitchen.onrender.com/api/v1/borrows/${id_book}`
-    );
+    const response = await axiosWithConfig.get(`/borrows/${id_book}`);
 
     return response.data as Response<Borrow>;
   } catch (error: any) {
@@ -31,12 +27,9 @@ export const getDetailBorrow = async (id_book: string) => {
   }
 };
 
-export const createBorrow = async (body: BorrowPayload) => {
+export const createBorrow = async (body: BorrowSchema) => {
   try {
-    const response = await axiosWithConfig.post(
-      "https://hells-kitchen.onrender.com/api/v1/borrows",
-      body
-    );
+    const response = await axiosWithConfig.post("/borrows", body);
 
     return response.data as Response;
   } catch (error: any) {
@@ -49,10 +42,7 @@ export const updateBorrow = async (
   body: UpdateBorrowSchema
 ) => {
   try {
-    const response = await axiosWithConfig.put(
-      `https://hells-kitchen.onrender.com/api/v1/borrows/${id_borrow}`,
-      body
-    );
+    const response = await axiosWithConfig.put(`/borrows/${id_borrow}`, body);
 
     return response.data as Response;
   } catch (error: any) {
@@ -62,9 +52,7 @@ export const updateBorrow = async (
 
 export const deleteBorrow = async (id_borrow: string) => {
   try {
-    const response = await axiosWithConfig.delete(
-      `https://hells-kitchen.onrender.com/api/v1/borrows/${id_borrow}`
-    );
+    const response = await axiosWithConfig.delete(`/borrows/${id_borrow}`);
 
     return response.data as Response;
   } catch (error: any) {
