@@ -1,5 +1,7 @@
-import { FormEvent, useEffect, useState } from "react";
-import { Trash2 } from "lucide-react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
@@ -9,23 +11,24 @@ import Alert from "@/components/alert";
 
 import {
   User,
-  deleteProfile,
   getProfile,
+  deleteProfile,
   updateProfile,
+  UpdateProfileSchema,
+  updateProfileSchema,
 } from "@/utils/apis/users";
-import { useNavigate } from "react-router-dom";
+
+import { Loader2, Trash2 } from "lucide-react";
+import { Form } from "@/components/ui/form";
+import { CustomFormField } from "@/components/form/CustomForm";
+import { useToken } from "@/utils/context/token";
 
 const EditProfile = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { changeToken } = useToken();
 
-  const [profile, setProfile] = useState<Partial<User>>({
-    full_name: "",
-    email: "",
-    address: "",
-    phone_number: "",
-    password: "",
-  });
+  const [profile, setProfile] = useState<User>();
 
   useEffect(() => {
     fetchData();
@@ -44,21 +47,29 @@ const EditProfile = () => {
     }
   }
 
-  async function onSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const body = {
-      full_name: profile.full_name ?? "",
-      email: profile.email ?? "",
-      password: profile.password ?? "",
-      address: profile.address ?? "",
-      phone_number: profile.phone_number ?? "",
-    };
+  const form = useForm<UpdateProfileSchema>({
+    resolver: zodResolver(updateProfileSchema),
+    defaultValues: {
+      full_name: profile?.full_name!,
+      email: profile?.email!,
+      password: "",
+      address: profile?.address!,
+      phone_number: profile?.phone_number!,
+      profile_picture: profile?.profile_picture!,
+    },
+    values: {
+      full_name: profile?.full_name!,
+      email: profile?.email!,
+      password: "",
+      address: profile?.address!,
+      phone_number: profile?.phone_number!,
+    },
+  });
 
+  async function onSubmit(data: UpdateProfileSchema) {
     try {
-      const result = await updateProfile(body);
+      const result = await updateProfile(data);
       toast({ description: result.message });
-
-      navigate("/profile");
     } catch (error: any) {
       toast({
         title: "Oops! Something went wrong.",
@@ -72,6 +83,9 @@ const EditProfile = () => {
     try {
       const result = await deleteProfile();
       toast({ description: result.message });
+      changeToken();
+
+      navigate("/");
     } catch (error: any) {
       toast({
         title: "Oops! Something went wrong.",
@@ -84,8 +98,8 @@ const EditProfile = () => {
   return (
     <>
       <Layout title="Edit Profile">
-        <div className="flex flex-col items-center gap-5 relative">
-          <div className="w-full flex justify-end absolute">
+        <div className="flex flex-col items-center gap-5">
+          <div className="w-full flex justify-end">
             <Alert
               title="Are you absolutely sure?"
               description="This action cannot be undone. This will permanently delete your account and remove your data from our servers."
@@ -99,80 +113,119 @@ const EditProfile = () => {
               </Button>
             </Alert>
           </div>
-          <img
-            src={profile.profile_picture || "https://github.com/shadcn.png"}
-            alt={profile.full_name || "Guest"}
-            className="w-32 h-32 rounded-full"
-          />
-          <form
-            className="w-1/2 flex flex-col gap-3"
-            onSubmit={(e) => onSubmit(e)}
-          >
-            <div className="">
-              <p className="font-semibold">Full Name</p>
-              <Input
-                type="text"
-                value={profile?.full_name}
-                onChange={(e) =>
-                  setProfile((prevState) => {
-                    return { ...prevState, full_name: e.target.value };
-                  })
-                }
-              />
-            </div>
-            <div className="">
-              <p className="font-semibold">Email</p>
-              <Input
-                type="email"
-                value={profile?.email}
-                onChange={(e) =>
-                  setProfile((prevState) => {
-                    return { ...prevState, email: e.target.value };
-                  })
-                }
-              />
-            </div>
+          <Form {...form}>
+            <form
+              className="w-1/2 flex flex-col gap-2"
+              onSubmit={form.handleSubmit(onSubmit)}
+            >
+              <CustomFormField
+                control={form.control}
+                name="full_name"
+                label="Full Name"
+              >
+                {(field) => (
+                  <Input
+                    {...field}
+                    placeholder={profile?.full_name}
+                    type="text"
+                    disabled={form.formState.isSubmitting}
+                    aria-disabled={form.formState.isSubmitting}
+                  />
+                )}
+              </CustomFormField>
 
-            <div className="">
-              <p className="font-semibold">Address</p>
-              <Input
-                type="text"
-                value={profile?.address}
-                onChange={(e) =>
-                  setProfile((prevState) => {
-                    return { ...prevState, address: e.target.value };
-                  })
-                }
-              />
-            </div>
-            <div className="">
-              <p className="font-semibold">Phone Number</p>
-              <Input
-                type="number"
-                value={profile?.phone_number}
-                onChange={(e) =>
-                  setProfile((prevState) => {
-                    return { ...prevState, phone_number: e.target.value };
-                  })
-                }
-              />
-            </div>
-            <div className="">
-              <p className="font-semibold">Password</p>
-              <Input
-                type="password"
-                value={profile?.password}
-                onChange={(e) =>
-                  setProfile((prevState) => {
-                    return { ...prevState, password: e.target.value };
-                  })
-                }
-              />
-            </div>
-            <Button type="submit" className="w-full">
-              Save
-            </Button>
-          </form>
+              {/* IMAGES */}
+              <CustomFormField
+                control={form.control}
+                name="profile_picture"
+                label="Profile Picture"
+              >
+                {() => (
+                  <Input
+                    type="file"
+                    disabled={form.formState.isSubmitting}
+                    aria-disabled={form.formState.isSubmitting}
+                  />
+                )}
+              </CustomFormField>
+              <CustomFormField
+                control={form.control}
+                name="email"
+                label="Email"
+              >
+                {(field) => (
+                  <Input
+                    {...field}
+                    placeholder={profile?.email}
+                    type="email"
+                    disabled={form.formState.isSubmitting}
+                    aria-disabled={form.formState.isSubmitting}
+                  />
+                )}
+              </CustomFormField>
+              <CustomFormField
+                control={form.control}
+                name="password"
+                label="Password"
+              >
+                {(field) => (
+                  <Input
+                    {...field}
+                    placeholder="Password"
+                    type="password"
+                    disabled={form.formState.isSubmitting}
+                    aria-disabled={form.formState.isSubmitting}
+                  />
+                )}
+              </CustomFormField>
+
+              <CustomFormField
+                control={form.control}
+                name="address"
+                label="Address"
+              >
+                {(field) => (
+                  <Input
+                    {...field}
+                    placeholder={profile?.address}
+                    type="text"
+                    disabled={form.formState.isSubmitting}
+                    aria-disabled={form.formState.isSubmitting}
+                  />
+                )}
+              </CustomFormField>
+              <CustomFormField
+                control={form.control}
+                name="phone_number"
+                label="Phone Number"
+              >
+                {(field) => (
+                  <Input
+                    {...field}
+                    placeholder={profile?.phone_number}
+                    type="tel"
+                    disabled={form.formState.isSubmitting}
+                    aria-disabled={form.formState.isSubmitting}
+                  />
+                )}
+              </CustomFormField>
+              <Button
+                className="mt-4"
+                type="submit"
+                disabled={form.formState.isSubmitting}
+                aria-disabled={form.formState.isSubmitting}
+              >
+                {form.formState.isSubmitting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please
+                    wait
+                  </>
+                ) : (
+                  "Save"
+                )}
+              </Button>
+            </form>
+          </Form>
         </div>
       </Layout>
     </>

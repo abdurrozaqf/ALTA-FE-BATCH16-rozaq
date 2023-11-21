@@ -1,5 +1,5 @@
 import { Response } from "@/utils/types/api";
-import { User, UserPayload } from "./types";
+import { User, UpdateProfileSchema } from "./types";
 import axiosWithConfig from "../axiosWithConfig";
 
 export const getProfile = async () => {
@@ -14,7 +14,7 @@ export const getProfile = async () => {
   }
 };
 
-export const updateProfile = async (body: UserPayload) => {
+export const updateProfile = async (body: UpdateProfileSchema) => {
   try {
     const response = await axiosWithConfig.put(
       "https://hells-kitchen.onrender.com/api/v1/users/",

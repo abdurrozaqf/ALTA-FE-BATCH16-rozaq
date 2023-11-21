@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { getBooks, Book, deleteBook } from "@/utils/apis/books";
 import { FilePlus2, Pencil, Trash2 } from "lucide-react";
 
-import EditBookForm from "@/components/form/EditBookForm";
 import AddBookForm from "@/components/form/AddBookForm";
 import { useToast } from "@/components/ui/use-toast";
 import Layout from "@/components/layout";
@@ -18,10 +17,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useNavigate } from "react-router-dom";
 
-const Admin = () => {
+const AdminDashboard = () => {
   const [books, setBooks] = useState<Book[]>([]);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchData();
@@ -40,9 +41,9 @@ const Admin = () => {
     }
   }
 
-  async function handleDeleteBook() {
+  async function handleDeleteBook(id_book: number) {
     try {
-      const result = await deleteBook(`1`);
+      const result = await deleteBook(`${id_book}`);
       toast({ description: result.message });
     } catch (error: any) {
       toast({
@@ -56,7 +57,7 @@ const Admin = () => {
   return (
     <>
       <Layout title="List of Books">
-        <Alert title="Add Books" description={<AddBookForm />}>
+        <Alert title="Add a Book" description={<AddBookForm />}>
           <div className="px-10 py-3 bg-white text-gray-600 rounded-full shadow-md border hover:text-white hover:bg-indigo-400 bottom-24 z-40 absolute">
             <FilePlus2 size={"3rem"} />
           </div>
@@ -102,18 +103,17 @@ const Admin = () => {
                   <p>{book.featured.toString()}</p>
                 </TableCell>
                 <TableCell className="flex justify-end gap-3 mt-5">
-                  <Alert title="Edit Book" description={<EditBookForm />}>
-                    <div className="p-3 bg-white rounded-md shadow-md hover:bg-indigo-100">
-                      <Pencil />
-                    </div>
-                  </Alert>
+                  <Pencil
+                    className="w-12 h-12 p-3 bg-white rounded-md shadow-md hover:bg-indigo-100 cursor-pointer"
+                    onClick={() => navigate(`/edit-book-form/${book.id}`)}
+                  />
 
                   <Alert
                     title="Are you absolutely sure deleted this book?"
                     description="This action cannot be undone. This will permanently
                           delete your book and remove your data from our
                           servers."
-                    onAction={handleDeleteBook}
+                    onAction={() => handleDeleteBook(book.id)}
                   >
                     <div className="p-3 bg-white rounded-md shadow-md hover:bg-indigo-400 hover:text-white">
                       <Trash2 />
@@ -129,4 +129,4 @@ const Admin = () => {
   );
 };
 
-export default Admin;
+export default AdminDashboard;

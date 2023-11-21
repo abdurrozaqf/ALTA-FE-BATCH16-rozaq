@@ -30,9 +30,9 @@ const HistoryBorrow = () => {
 
   return (
     <>
-      <Layout title="History Borrow of">
+      <Layout title="History Borrow">
         <p className="text-[#4D4D4D] text-md font-semibold mb-6">
-          History Borrow your book
+          History borrow your Books
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 justify-items-center">
           {borrow.map((borrow) => (

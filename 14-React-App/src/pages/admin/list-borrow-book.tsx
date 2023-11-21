@@ -15,10 +15,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import EditBorrowBookForm from "@/components/form/EditBorrowBookForm";
+import { format } from "date-fns";
+import { useNavigate } from "react-router-dom";
 
 const AdminListBorrow = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const [borrow, setBorrow] = useState<Borrow[]>([]);
 
@@ -39,9 +41,9 @@ const AdminListBorrow = () => {
     }
   }
 
-  async function handleDeleteBorrow() {
+  async function handleDeleteBorrow(id_borrow: number) {
     try {
-      const result = await deleteBorrow(`1`);
+      const result = await deleteBorrow(`${id_borrow}`);
       toast({ description: result.message });
     } catch (error: any) {
       toast({
@@ -78,27 +80,26 @@ const AdminListBorrow = () => {
                   <p>{borrow.book.title}</p>
                 </TableCell>
                 <TableCell>
-                  <p>{borrow.borrow_date}</p>
+                  {format(new Date(borrow.borrow_date), "eee, dd MMM Y")}
                 </TableCell>
                 <TableCell>
-                  <p>{borrow.due_date}</p>
+                  {format(new Date(borrow.due_date), "eee, dd MMM Y")}
                 </TableCell>
                 <TableCell>
-                  <p>{borrow.return_date}</p>
+                  {/* {format(new Date(borrow.return_date!), "eee, dd MMM Y")} */}
                 </TableCell>
                 <TableCell className="flex items-center justify-center gap-2">
-                  <Alert title="Edit Book" description={<EditBorrowBookForm />}>
-                    <div className="p-3 bg-white rounded-md shadow-md hover:bg-indigo-100">
-                      <Pencil />
-                    </div>
-                  </Alert>
+                  <Pencil
+                    className="w-12 h-12 p-3 bg-white rounded-md shadow-md hover:bg-indigo-100 cursor-pointer"
+                    onClick={() => navigate(`/edit-borrow-form/${borrow.id}`)}
+                  />
 
                   <Alert
                     title="Are you absolutely sure deleted this book?"
                     description="This action cannot be undone. This will permanently
                           delete your book and remove your data from our
                           servers."
-                    onAction={handleDeleteBorrow}
+                    onAction={() => handleDeleteBorrow(borrow.id)}
                   >
                     <div className="p-3 bg-white rounded-md shadow-md hover:bg-indigo-400 hover:text-white">
                       <Trash2 />

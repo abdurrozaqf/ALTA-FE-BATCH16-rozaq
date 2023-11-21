@@ -1,5 +1,10 @@
 import { PayloadPagination, Response } from "@/utils/types/api";
-import { Borrow, BorrowPayload, UpdateBorrowPlayLoad } from "./types";
+import {
+  Borrow,
+  BorrowPayload,
+  BorrowSchema,
+  UpdateBorrowSchema,
+} from "./types";
 import axiosWithConfig from "../axiosWithConfig";
 
 export const getBorrows = async () => {
@@ -9,6 +14,18 @@ export const getBorrows = async () => {
     );
 
     return response.data as Response<PayloadPagination<Borrow[]>>;
+  } catch (error: any) {
+    throw Error(error.response.data.message);
+  }
+};
+
+export const getDetailBorrow = async (id_book: string) => {
+  try {
+    const response = await axiosWithConfig.get(
+      `https://hells-kitchen.onrender.com/api/v1/borrows/${id_book}`
+    );
+
+    return response.data as Response<Borrow>;
   } catch (error: any) {
     throw Error(error.response.data.message);
   }
@@ -29,7 +46,7 @@ export const createBorrow = async (body: BorrowPayload) => {
 
 export const updateBorrow = async (
   id_borrow: string,
-  body: UpdateBorrowPlayLoad
+  body: UpdateBorrowSchema
 ) => {
   try {
     const response = await axiosWithConfig.put(

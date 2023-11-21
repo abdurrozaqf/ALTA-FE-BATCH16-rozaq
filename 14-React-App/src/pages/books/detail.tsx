@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 import { Book, getDetailBook } from "@/utils/apis/books";
 import { createBorrow } from "@/utils/apis/borrow";
+import { useToken } from "@/utils/context/token";
 
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/components/ui/use-toast";
@@ -13,6 +14,7 @@ import Layout from "@/components/layout";
 const Detail = () => {
   const params = useParams();
   const { toast } = useToast();
+  const { user } = useToken();
 
   const [book, setBook] = useState<Book>();
 
@@ -34,13 +36,10 @@ const Detail = () => {
   }
 
   async function handleBorrowBook() {
-    let today = new Date();
-    let isoDateString = today.toISOString();
-
     try {
       const body = {
         bookId: [book?.id!],
-        borrow_date: isoDateString,
+        borrow_date: new Date(),
       };
 
       const result = await createBorrow(body);
@@ -76,7 +75,9 @@ const Detail = () => {
           <p className="text-muted-foreground text-sm text-justify">
             {book?.description}
           </p>
-          <Button onClick={handleBorrowBook}>Borrow</Button>
+          {user.role === "user" && (
+            <Button onClick={handleBorrowBook}>Borrow</Button>
+          )}
         </div>
       </div>
     </Layout>
