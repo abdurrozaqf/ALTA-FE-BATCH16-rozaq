@@ -2,6 +2,7 @@ import { Borrow, deleteBorrow, getBorrows } from "@/utils/apis/borrow";
 import { Pencil, Trash2 } from "lucide-react";
 import { useState, useEffect } from "react";
 
+import EditBorrowBookForm from "@/components/form/EditBorrowBookForm";
 import { useToast } from "@/components/ui/use-toast";
 import Layout from "@/components/layout";
 import Alert from "@/components/alert";
@@ -16,11 +17,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { format } from "date-fns";
-import { useNavigate } from "react-router-dom";
 
 const AdminListBorrow = () => {
   const { toast } = useToast();
-  const navigate = useNavigate();
 
   const [borrow, setBorrow] = useState<Borrow[]>([]);
 
@@ -56,7 +55,7 @@ const AdminListBorrow = () => {
 
   return (
     <>
-      <Layout title="List of Borrows">
+      <Layout title="Dashboard List of Borrows">
         <Table>
           <TableCaption>List of Borrows.</TableCaption>
           <TableHeader>
@@ -85,15 +84,22 @@ const AdminListBorrow = () => {
                 <TableCell>
                   {format(new Date(borrow.due_date), "eee, dd MMM Y")}
                 </TableCell>
-                <TableCell>
-                  {/* {format(new Date(borrow.return_date!), "eee, dd MMM Y")} */}
-                </TableCell>
+                <TableCell></TableCell>
                 <TableCell className="flex items-center justify-center gap-2">
-                  <Pencil
-                    className="w-12 h-12 p-3 bg-white rounded-md shadow-md hover:bg-indigo-100 cursor-pointer"
-                    onClick={() => navigate(`/edit-borrow-form/${borrow.id}`)}
-                  />
-
+                  <Alert
+                    title="Edit Book"
+                    description={
+                      <EditBorrowBookForm
+                        id_borrow={`${borrow.id}`}
+                        borrow_date={borrow.borrow_date}
+                        due_date={borrow.due_date}
+                      />
+                    }
+                  >
+                    <div className="p-3 bg-white rounded-md shadow-md hover:bg-indigo-400 hover:text-white">
+                      <Pencil />
+                    </div>
+                  </Alert>
                   <Alert
                     title="Are you absolutely sure deleted this book?"
                     description="This action cannot be undone. This will permanently
