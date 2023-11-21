@@ -34,11 +34,13 @@ const AddBookForm = () => {
       isbn: "",
       category: "",
       description: "",
-      cover_image: "",
     },
   });
 
+  const fileRef = form.register("cover_image", { required: true });
+
   async function onSubmit(data: BookPayloadSchema) {
+    data.cover_image = data.cover_image[0].name;
     try {
       const result = await createBook(data);
       toast({
@@ -77,6 +79,7 @@ const AddBookForm = () => {
         >
           {() => (
             <Input
+              {...fileRef}
               type="file"
               disabled={form.formState.isSubmitting}
               aria-disabled={form.formState.isSubmitting}

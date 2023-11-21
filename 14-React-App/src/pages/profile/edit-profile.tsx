@@ -63,10 +63,14 @@ const EditProfile = () => {
       password: "",
       address: profile?.address!,
       phone_number: profile?.phone_number!,
+      profile_picture: profile?.profile_picture!,
     },
   });
 
+  const fileRef = form.register("profile_picture", { required: true });
+
   async function onSubmit(data: UpdateProfileSchema) {
+    data.profile_picture = data.profile_picture[0].name;
     try {
       const result = await updateProfile(data);
       toast({ description: result.message });
@@ -142,6 +146,7 @@ const EditProfile = () => {
               >
                 {() => (
                   <Input
+                    {...fileRef}
                     type="file"
                     disabled={form.formState.isSubmitting}
                     aria-disabled={form.formState.isSubmitting}

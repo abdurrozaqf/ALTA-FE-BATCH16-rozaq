@@ -60,7 +60,6 @@ const EditBookForm = () => {
       isbn: book?.isbn!,
       category: book?.category!,
       description: book?.description!,
-      cover_image: book?.cover_image!,
     },
     values: {
       title: book?.title!,
@@ -71,7 +70,10 @@ const EditBookForm = () => {
     },
   });
 
+  const fileRef = form.register("cover_image", { required: true });
+
   async function onSubmit(data: BookPayloadSchema) {
+    data.cover_image = data.cover_image[0].name;
     try {
       const result = await updateBook(params.id_book!, data);
       toast({
@@ -112,7 +114,10 @@ const EditBookForm = () => {
             >
               {() => (
                 <Input
+                  {...fileRef}
                   type="file"
+                  onSelect={fileRef.onChange}
+                  accept="image/jpg, image/jpeg, image/png"
                   disabled={form.formState.isSubmitting}
                   aria-disabled={form.formState.isSubmitting}
                 />

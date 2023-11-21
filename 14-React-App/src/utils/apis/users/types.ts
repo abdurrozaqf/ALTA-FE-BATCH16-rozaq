@@ -29,13 +29,14 @@ export const updateProfileSchema = z.object({
     .min(7, { message: "Phone number minimum length is 7" }),
   profile_picture: z
     .any()
+    .refine((files) => files?.length == 1, "Image is required.")
     .refine(
       (files) => files?.[0]?.size <= MAX_FILE_SIZE,
-      "Max image size is 5MB"
+      `Max file size is 5MB.`
     )
     .refine(
       (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-      "Only .jpg, .jpeg, .png formats are supported"
+      ".jpg, .jpeg, and .png files are accepted."
     )
     .optional()
     .or(z.literal("")),
