@@ -5,10 +5,13 @@ import App from "@/routes";
 
 import { TokenProvider } from "@/utils/context/token";
 import "@/styles/index.css";
+import { ThemeProvider } from "./utils/context/theme-provider";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <TokenProvider>
-    <App />
-    <Toaster />
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <App />
+      <Toaster />
+    </ThemeProvider>
   </TokenProvider>
 );
