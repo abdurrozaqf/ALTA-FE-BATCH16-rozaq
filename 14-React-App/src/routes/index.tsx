@@ -11,8 +11,6 @@ import ProfileAccount from "@/pages/profile/index";
 import EditProfile from "@/pages/profile/edit-profile";
 import AdminDashboard from "@/pages/admin/index";
 import AdminListBorrow from "@/pages/admin/list-borrow-book";
-import EditBookForm from "@/components/form/EditBookForm";
-import EditBorrowBookForm from "@/components/form/EditBorrowBookForm";
 
 export default function Router() {
   const router = createBrowserRouter([
@@ -58,14 +56,6 @@ export default function Router() {
         {
           path: "/admin-list-borrow",
           element: <AdminListBorrow />,
-        },
-        {
-          path: "/edit-book-form/:id_book",
-          element: <EditBookForm />,
-        },
-        {
-          path: "/edit-borrow-form/:id_borrow",
-          element: <EditBorrowBookForm />,
         },
         {
           path: "*",
