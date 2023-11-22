@@ -1,10 +1,14 @@
-import { useContext, createContext, useState } from "react";
+import { useContext, createContext, useState, ReactNode } from "react";
 import { ChevronLast, ChevronFirst } from "lucide-react";
 import Logo from "@/assets/logo-2.svg";
 
-const SidebarContext: any = createContext(null);
+interface Props {
+  children: ReactNode;
+}
 
-export default function Sidebar({ children }: any) {
+const SidebarContext = createContext<any>(undefined);
+
+export default function Sidebar({ children }: Props) {
   const [expanded, setExpanded] = useState(false);
 
   return (
@@ -35,46 +39,41 @@ export default function Sidebar({ children }: any) {
   );
 }
 
-export function SidebarItem({ icon, text, active, alert }: any) {
-  const { expanded }: any = useContext(SidebarContext);
+interface SidebarItem {
+  icon: any;
+  text: string;
+}
+
+export function SidebarItem(props: SidebarItem) {
+  const { icon, text } = props;
+
+  const { expanded } = useContext(SidebarContext);
 
   return (
     <li
-      className={`
+      className="
         relative flex items-center py-2 px-3 my-1
         font-medium rounded-md cursor-pointer
-        transition-colors group
-        ${
-          active
-            ? "bg-gradient-to-tr from-indigo-500 to-indigo-300 text-white"
-            : "hover:bg-indigo-100 text-gray-600"
-        }`}
+        transition-colors group hover:bg-indigo-100 text-gray-600"
     >
       {icon}
       <span
-        className={`overflow-hidden transition-all ${
-          expanded ? "w-52 ml-3 text-left" : "w-0 h-0"
+        className={`overflow-hidden transition duration-300 ${
+          expanded
+            ? "w-52 h-fit ml-4 text-left translate-x-0 opacity-100 "
+            : "w-0 h-0 -translate-x-4 opacity-0"
         }`}
       >
         {text}
       </span>
 
-      {alert && (
-        <div
-          className={`absolute right-2 w-2 h-2 rounded bg-indigo-400 ${
-            expanded ? "" : "top-2"
-          }`}
-        />
-      )}
-
       {!expanded && (
         <div
-          className={`
+          className="
           absolute left-full rounded-md px-2 py-1 ml-6 z-50
           bg-indigo-400 text-white text-sm text-center w-32
           invisible opacity-20 -translate-x-3 transition-all
-          group-hover:visible group-hover:opacity-100 group-hover:translate-x-0
-      `}
+          group-hover:visible group-hover:opacity-100 group-hover:translate-x-0"
         >
           {text}
         </div>
