@@ -17,7 +17,7 @@ export default function Sidebar({ children }: Props) {
         <div className="p-4 pb-2 flex items-center mb-16 justify-between">
           <img
             src={Logo}
-            className={`overflow-hidden transition-all ${
+            className={`overflow-hidden transition-all duration-300 ${
               expanded ? "w-44 h-auto" : "w-0 h-0"
             }`}
             alt="Logo"
