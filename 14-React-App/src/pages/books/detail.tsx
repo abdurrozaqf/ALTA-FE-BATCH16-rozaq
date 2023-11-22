@@ -1,9 +1,9 @@
+import { useEffect, useState, useMemo } from "react";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
 
 import { Book, getDetailBook } from "@/utils/apis/books";
-import { createBorrow } from "@/utils/apis/borrow";
 import { useToken } from "@/utils/context/token";
+import useCartStore from "@/utils/state";
 
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/components/ui/use-toast";
@@ -12,11 +12,20 @@ import { Badge } from "@/components/ui/badge";
 import Layout from "@/components/layout";
 
 const Detail = () => {
-  const params = useParams();
+  const { cart, addBook } = useCartStore();
   const { toast } = useToast();
   const { user } = useToken();
+  const params = useParams();
 
   const [book, setBook] = useState<Book>();
+
+  const isInCart = useMemo(() => {
+    const checkCart = cart.find((item) => item.id === +params.id_book!);
+
+    if (checkCart) return true;
+
+    return false;
+  }, [cart]);
 
   useEffect(() => {
     fetchData();
@@ -35,24 +44,11 @@ const Detail = () => {
     }
   }
 
-  async function handleBorrowBook() {
-    try {
-      const body = {
-        bookId: [book?.id!],
-        borrow_date: new Date(),
-      };
-
-      const result = await createBorrow(body);
-      toast({
-        description: result.message,
-      });
-    } catch (error: any) {
-      toast({
-        title: "Oops! Something went wrong.",
-        description: error.toString(),
-        variant: "destructive",
-      });
-    }
+  function onClickBorrow() {
+    toast({
+      description: "Book has been added to cart.",
+    });
+    addBook(book!);
   }
 
   return (
@@ -76,7 +72,13 @@ const Detail = () => {
             {book?.description}
           </p>
           {user.role === "user" && (
-            <Button onClick={handleBorrowBook}>Borrow</Button>
+            <Button
+              onClick={() => onClickBorrow()}
+              disabled={isInCart}
+              aria-disabled={isInCart}
+            >
+              {isInCart ? "In Cart" : "Borrow"}
+            </Button>
           )}
         </div>
       </div>
