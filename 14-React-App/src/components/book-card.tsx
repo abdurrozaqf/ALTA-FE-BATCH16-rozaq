@@ -10,7 +10,7 @@ const BookCard = (props: Props) => {
 
   return (
     <Link
-      className="bg-white p-4 rounded-lg flex flex-col gap-2 w-fit h-full shadow hover:bg-indigo-100 hover:scale-105"
+      className="bg-white p-4 rounded-lg flex flex-col gap-2 w-fit h-full shadow hover:bg-indigo-100 transition-all hover:scale-105"
       to={`/detail-book/${data.id}`}
     >
       <figure className="overflow-hidden shadow shadow-neutral-300 rounded-lg">
