@@ -22,6 +22,26 @@ export const getDetailBook = async (id_book: string) => {
   }
 };
 
+export const getFeaturedBook = async () => {
+  try {
+    const response = await axiosWithConfig.get(`/books?filter=featured`);
+
+    return response.data as Response<PayloadPagination<Book[]>>;
+  } catch (error: any) {
+    throw Error(error.response.data.message);
+  }
+};
+
+export const getPageBook = async (page: number) => {
+  try {
+    const response = await axiosWithConfig.get(`/books?page=${page}&limit=6`);
+
+    return response.data as Response<PayloadPagination<Book[]>>;
+  } catch (error: any) {
+    throw Error(error.response.data.message);
+  }
+};
+
 export const createBook = async (body: BookPayloadSchema) => {
   try {
     const response = await axiosWithConfig.post("/books", body);
