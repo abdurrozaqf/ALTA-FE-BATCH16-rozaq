@@ -21,17 +21,11 @@ const ListOfBook = () => {
   };
 
   const handlePageNext = () => {
-    // const add = page! + next;
-    // setPage(add);
-
     setPage((prevState) => prevState + 1);
     scrollTop();
   };
 
   const handlePagePrev = () => {
-    // const add = page! - prev;
-    // setPage(add);
-
     setPage((prevState) => prevState - 1);
     scrollTop();
   };
@@ -64,7 +58,7 @@ const ListOfBook = () => {
           <Button
             disabled={page === 1}
             onClick={() => handlePagePrev()}
-            className="bg-white dark:bg-black/25 hover:bg-indigo-200 dark:hover:bg-slate-800 border border-white dark:border dark:border-white/20 shadow text-black hover:text-black dark:text-white rounded-xl px-1 disabled:opacity-100"
+            className="bg-white dark:bg-black/25 hover:bg-indigo-200 dark:hover:bg-slate-800 border border-white dark:border dark:border-white/20 shadow text-black hover:text-black dark:text-white rounded-xl px-1"
           >
             <ChevronLeftIcon size={"2rem"} />
           </Button>
@@ -85,7 +79,7 @@ const ListOfBook = () => {
           <Button
             disabled={page === 2}
             onClick={() => handlePageNext()}
-            className="bg-white dark:bg-black/25 hover:bg-indigo-200 dark:hover:bg-slate-800 border border-white dark:border dark:border-white/20 shadow text-black hover:text-black dark:text-white rounded-xl px-1 disabled:opacity-100"
+            className="bg-white dark:bg-black/25 hover:bg-indigo-200 dark:hover:bg-slate-800 border border-white dark:border dark:border-white/20 shadow text-black hover:text-black dark:text-white rounded-xl px-1"
           >
             <ChevronRightIcon size={"2rem"} />
           </Button>
