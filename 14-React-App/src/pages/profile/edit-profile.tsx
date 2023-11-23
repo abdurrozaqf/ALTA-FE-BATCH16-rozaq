@@ -50,12 +50,12 @@ const EditProfile = () => {
   const form = useForm<UpdateProfileSchema>({
     resolver: zodResolver(updateProfileSchema),
     defaultValues: {
-      full_name: profile?.full_name!,
-      email: profile?.email!,
+      full_name: profile?.full_name! ?? "",
+      email: profile?.email! ?? "",
       password: "",
-      address: profile?.address!,
-      phone_number: profile?.phone_number!,
-      profile_picture: profile?.profile_picture!,
+      address: profile?.address! ?? "",
+      phone_number: profile?.phone_number! ?? "",
+      profile_picture: profile?.profile_picture! ?? "",
     },
     values: {
       full_name: profile?.full_name!,
@@ -109,17 +109,14 @@ const EditProfile = () => {
               description="This action cannot be undone. This will permanently delete your account and remove your data from our servers."
               onAction={handleDeleteProfile}
             >
-              <Button
-                variant="destructive"
-                className="shadow-md border hover:bg-red-800"
-              >
+              <div className="p-3 bg-red-600/30 dark:bg-red-900/40 rounded-md shadow-md hover:bg-red-500 dark:hover:bg-red-900">
                 <Trash2 />
-              </Button>
+              </div>
             </Alert>
           </div>
           <Form {...form}>
             <form
-              className="w-1/2 flex flex-col gap-2"
+              className="w-full md:w-2/3 lg:w-1/2 flex flex-col gap-4"
               onSubmit={form.handleSubmit(onSubmit)}
             >
               <CustomFormField

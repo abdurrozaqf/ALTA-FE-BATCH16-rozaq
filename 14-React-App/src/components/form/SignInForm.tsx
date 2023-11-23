@@ -93,7 +93,7 @@ const SignInForm = () => {
         or
       </div>
       <div className="w-full flex items-center justify-between">
-        <p className="text-center text-sm text-gray-600">
+        <p className="text-center text-sm text-gray-600 dark:text-white">
           New User? &nbsp;
           <Link to="/register" className="text-blue-500 hover:underline">
             Register Here
@@ -101,7 +101,7 @@ const SignInForm = () => {
         </p>
         <Link
           to="/"
-          className="text-center text-sm text-gray-600 hover:text-blue-500"
+          className="text-center text-sm text-gray-600 dark:text-white hover:text-blue-500 dark:hover:text-blue-500"
         >
           Use as Guest
         </Link>

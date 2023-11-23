@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { ReactNode } from "react";
 
 import Sidebar, { SidebarItem } from "@/components/sidebar";
-import { Toaster } from "@/components/ui/toaster";
+import { useToast } from "@/components/ui/use-toast";
 import Navbar from "@/components/navbar";
 
 import {
@@ -15,8 +15,7 @@ import {
 } from "lucide-react";
 
 import { useToken } from "@/utils/context/token";
-import { useToast } from "@/components/ui/use-toast";
-import Alert from "./alert";
+import Alert from "@/components/alert";
 
 interface Props {
   children: ReactNode;
@@ -37,8 +36,8 @@ const Layout = (props: Readonly<Props>) => {
   }
 
   return (
-    <div className="w-full h-screen flex p-9 font-inter overflow-auto bg-gradient-to-br from-indigo-300 to-indigo-100">
-      <div className="container flex px-0 shadow overflow-auto rounded-lg">
+    <div className="w-full h-screen flex p-0 lg:p-9 overflow-auto font-inter bg-gradient-to-br from-indigo-300 to-indigo-100 dark:from-indigo-950 dark:to-indigo-900/20 transition-all duration-200 ">
+      <div className="container flex px-0 overflow-auto shadow rounded-none lg:rounded-lg">
         <Sidebar>
           <div className="h-full flex flex-col">
             {token ? (
@@ -89,11 +88,10 @@ const Layout = (props: Readonly<Props>) => {
             )}
           </div>
         </Sidebar>
-        <div className="flex flex-col grow bg-[#F3F3F7]">
+        <div className="flex flex-col overflow-auto grow bg-[#F3F3F7] dark:bg-black/25">
           <Navbar title={title} />
-          <div className="overflow-auto px-11 py-6">{children}</div>
+          <div className="overflow-auto px-6 lg:px-11 py-6">{children}</div>
         </div>
-        <Toaster />
       </div>
     </div>
   );

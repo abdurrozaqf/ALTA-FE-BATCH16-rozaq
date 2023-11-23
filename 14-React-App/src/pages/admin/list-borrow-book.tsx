@@ -1,4 +1,4 @@
-import { Borrow, deleteBorrow, getBorrows } from "@/utils/apis/borrow";
+import { Borrow, deleteBorrow, getBorrows } from "@/utils/apis/borrows";
 import { Pencil, Trash2 } from "lucide-react";
 import { useState, useEffect } from "react";
 
@@ -54,23 +54,27 @@ const AdminListBorrow = () => {
   }
 
   return (
-    <>
-      <Layout title="Dashboard List of Borrows">
-        <Table>
+    <Layout title="Dashboard List of Borrows">
+      <div>
+        <Table className="overflow-auto">
           <TableCaption>List of Borrows.</TableCaption>
           <TableHeader>
-            <TableRow>
+            <TableRow className="dark:hover:bg-black/25">
+              <TableHead>No</TableHead>
               <TableHead>User</TableHead>
               <TableHead>Title</TableHead>
               <TableHead>Borrow Date</TableHead>
               <TableHead>Due Date</TableHead>
               <TableHead>Return Date</TableHead>
-              <TableHead className="w-[100px] text-center">Action</TableHead>
+              <TableHead className="text-center">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {borrow.map((borrow) => (
-              <TableRow key={borrow.id}>
+            {borrow.map((borrow, index) => (
+              <TableRow key={borrow.id} className="dark:hover:bg-black/25">
+                <TableCell>
+                  <p>{index + 1}</p>
+                </TableCell>
                 <TableCell>
                   <p>{borrow.user.full_name}</p>
                 </TableCell>
@@ -96,7 +100,7 @@ const AdminListBorrow = () => {
                       />
                     }
                   >
-                    <div className="p-3 bg-white rounded-md shadow-md hover:bg-indigo-400 hover:text-white">
+                    <div className="p-3 bg-white hover:bg-indigo-200 dark:bg-black/30 dark:hover:bg-indigo-950 dark:border dark:border-white/10  dark:text-white/50 dark:hover:text-white rounded-lg shadow-md">
                       <Pencil />
                     </div>
                   </Alert>
@@ -107,7 +111,7 @@ const AdminListBorrow = () => {
                           servers."
                     onAction={() => handleDeleteBorrow(borrow.id)}
                   >
-                    <div className="p-3 bg-white rounded-md shadow-md hover:bg-indigo-400 hover:text-white">
+                    <div className="p-3 bg-white dark:bg-black/30 rounded-md shadow-md hover:bg-red-500 dark:hover:bg-red-500 dark:border dark:border-white/10 hover:text-white">
                       <Trash2 />
                     </div>
                   </Alert>
@@ -116,8 +120,8 @@ const AdminListBorrow = () => {
             ))}
           </TableBody>
         </Table>
-      </Layout>
-    </>
+      </div>
+    </Layout>
   );
 };
 

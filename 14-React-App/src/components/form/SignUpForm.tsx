@@ -150,15 +150,15 @@ const SignUpForm = () => {
         or
       </div>
       <div className="w-full flex items-center justify-between">
-        <p className="text-center text-sm text-gray-600">
-          Already a User?&nbsp;
+        <p className="text-center text-sm text-gray-600 dark:text-white">
+          Already a User? &nbsp;
           <Link to="/login" className="text-blue-500 hover:underline">
             Login now
           </Link>
         </p>
         <Link
           to="/"
-          className="text-center text-sm text-gray-600 hover:text-blue-500"
+          className="text-center text-sm text-gray-600 dark:text-white hover:text-blue-500 dark:hover:text-blue-500"
         >
           Use as Guest
         </Link>

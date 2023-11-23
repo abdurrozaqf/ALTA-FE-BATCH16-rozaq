@@ -9,7 +9,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { createBorrow } from "@/utils/apis/borrow";
+import { createBorrow } from "@/utils/apis/borrows";
 import { ReactNode } from "react";
 import { useToast } from "./ui/use-toast";
 import useCartStore from "@/utils/state";
@@ -50,8 +50,8 @@ export function SheetCart(props: Props) {
   return (
     <Sheet>
       <SheetTrigger>{children}</SheetTrigger>
-      <SheetContent className="overflow-auto">
-        <SheetHeader className="sticky top-[-1.5rem] py-4 bg-white">
+      <SheetContent className="overflow-auto dark:bg-black">
+        <SheetHeader className="sticky top-[-1.5rem] py-4 bg-white dark:bg-black">
           <SheetTitle>{title}</SheetTitle>
           <SheetDescription>
             This is your crat for borrow books
@@ -60,8 +60,8 @@ export function SheetCart(props: Props) {
         </SheetHeader>
         <div className="flex flex-col gap-4 mt-4 ">
           {cart.map((book) => (
-            <>
-              <div className="flex gap-4 items-center" key={book.id}>
+            <div key={book.id}>
+              <div className="flex gap-4 items-center">
                 <img
                   className="object-contain w-10"
                   src={book.cover_image}
@@ -74,7 +74,7 @@ export function SheetCart(props: Props) {
                 />
               </div>
               <hr />
-            </>
+            </div>
           ))}
         </div>
         <SheetFooter className="mt-5">

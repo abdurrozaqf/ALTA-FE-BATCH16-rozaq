@@ -27,7 +27,7 @@ const Alert = (props: Props) => {
     <div>
       <AlertDialog>
         <AlertDialogTrigger>{children}</AlertDialogTrigger>
-        <AlertDialogContent>
+        <AlertDialogContent className="dark:bg-black/30">
           <AlertDialogHeader>
             <AlertDialogTitle>{title}</AlertDialogTitle>
             <AlertDialogDescription>{description}</AlertDialogDescription>

@@ -36,7 +36,7 @@ const ProfileAccount = () => {
           <div className="w-full flex justify-end">
             <Link
               to={"/edit-profile"}
-              className="p-3 bg-white rounded-md shadow-md hover:bg-indigo-50"
+              className="p-3 bg-white dark:bg-black/40 rounded-md shadow-md hover:bg-indigo-100 dark:hover:bg-indigo-950"
             >
               <FileEdit strokeWidth={"1.2px"} />
             </Link>
@@ -44,29 +44,37 @@ const ProfileAccount = () => {
           <img
             src={profile?.profile_picture}
             alt={profile?.full_name}
-            className="w-40 h-40 aspect-square rounded-full object-cover"
+            className="h-36 w-h-36 object-cover aspect-square rounded-full"
           />
-          <div className="w-1/2">
-            <p className="font-semibold">Full Name</p>
-            <div className="px-4 py-2 border border-slate-300 rounded-md">
+          <div className="w-full md:w-2/3 lg:w-1/2 pt-10">
+            <p className="font-semibold dark:font-normal tracking-wide mb-2">
+              Full Name
+            </p>
+            <div className="px-4 py-2 border border-slate-300 dark:border-white/30 rounded-md">
               <p>{profile?.full_name}</p>
             </div>
           </div>
-          <div className="w-1/2">
-            <p className="font-semibold">Email</p>
-            <div className="px-4 py-2 border border-slate-300 rounded-md">
+          <div className="w-full md:w-2/3 lg:w-1/2">
+            <p className="font-semibold dark:font-normal tracking-wide mb-2">
+              Email
+            </p>
+            <div className="px-4 py-2 border border-slate-300 dark:border-white/30 rounded-md">
               <p>{profile?.email}</p>
             </div>
           </div>
-          <div className="w-1/2">
-            <p className="font-semibold">Address</p>
-            <div className="px-4 py-2 border border-slate-300 rounded-md">
+          <div className="w-full md:w-2/3 lg:w-1/2">
+            <p className="font-semibold dark:font-normal tracking-wide mb-2">
+              Address
+            </p>
+            <div className="px-4 py-2 border border-slate-300 dark:border-white/30 rounded-md">
               <p>{profile?.address}</p>
             </div>
           </div>
-          <div className="w-1/2">
-            <p className="font-semibold">Phone Number</p>
-            <div className="px-4 py-2 border border-slate-300 rounded-md">
+          <div className="w-full md:w-2/3 lg:w-1/2">
+            <p className="font-semibold dark:font-normal tracking-wide mb-2">
+              Phone Number
+            </p>
+            <div className="px-4 py-2 border border-slate-300 dark:border-white/30 rounded-md">
               <p>{profile?.phone_number}</p>
             </div>
           </div>

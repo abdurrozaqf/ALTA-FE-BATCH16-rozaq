@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import { getBorrows, Borrow } from "@/utils/apis/borrow";
+import { getBorrows, Borrow } from "@/utils/apis/borrows";
 
 import BookCardHistory from "@/components/book-card-history";
 import { useToast } from "@/components/ui/use-toast";
@@ -31,7 +31,7 @@ const HistoryBorrow = () => {
   return (
     <>
       <Layout title="History Borrow">
-        <p className="text-[#4D4D4D] text-md font-semibold mb-6">
+        <p className="text-[#4D4D4D] dark:text-white text-md font-semibold mb-6">
           History borrow your Books
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 justify-items-center">

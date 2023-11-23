@@ -11,7 +11,7 @@ import {
   UpdateBorrowSchema,
   updateBorrow,
   updateBorrowSchema,
-} from "@/utils/apis/borrow";
+} from "@/utils/apis/borrows";
 
 import {
   Popover,

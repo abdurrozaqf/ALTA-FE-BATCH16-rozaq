@@ -53,9 +53,9 @@ const Detail = () => {
 
   return (
     <Layout title="Detail Book">
-      <div className="bg-white flex flex-col md:flex-row w-full h-full py-6 px-8 gap-5 items-center justify-center rounded-md shadow-md">
+      <div className="w-auto h-auto bg-white dark:bg-black/30 flex flex-col lg:flex-row py-6 px-8 gap-5 items-center justify-center rounded-md shadow-md">
         <img
-          className="object-contain aspect-[3/4] w-52 md:w-64 lg:w-96"
+          className="object-contain aspect-[3/4] w-32 md:w-48 lg:w-96"
           src={book?.cover_image}
           alt={book?.title}
         />
