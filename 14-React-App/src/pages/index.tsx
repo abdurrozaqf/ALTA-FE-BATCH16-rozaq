@@ -1,7 +1,12 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-import { Book, getBooks, getFeaturedBook } from "@/utils/apis/books";
+import {
+  Book,
+  getBooks,
+  getFeaturedBook,
+  getNewBook,
+} from "@/utils/apis/books";
 
 import { useToast } from "@/components/ui/use-toast";
 import BookCard from "@/components/book-card";
@@ -13,14 +18,16 @@ import { useTheme } from "@/utils/context/theme-provider";
 import BookCardNew from "@/components/book-card-new";
 
 const Home = () => {
-  const [featuredBooks, setFeaturedBooks] = useState<Book[]>([]);
   const [books, setBooks] = useState<Book[]>([]);
+  const [newbooks, setNewBooks] = useState<Book[]>([]);
+  const [featuredBooks, setFeaturedBooks] = useState<Book[]>([]);
   const { toast } = useToast();
   const { theme } = useTheme();
 
   useEffect(() => {
     fetchDataFeatured();
     fetchDataBooks();
+    fetchDataNewBooks();
   }, []);
 
   async function fetchDataFeatured() {
@@ -35,10 +42,24 @@ const Home = () => {
       });
     }
   }
+
   async function fetchDataBooks() {
     try {
       const result = await getBooks();
       setBooks(result.payload.datas);
+    } catch (error: any) {
+      toast({
+        title: "Oops! Something went wrong.",
+        description: error.toString(),
+        variant: "destructive",
+      });
+    }
+  }
+
+  async function fetchDataNewBooks() {
+    try {
+      const result = await getNewBook();
+      setNewBooks(result.payload.datas);
     } catch (error: any) {
       toast({
         title: "Oops! Something went wrong.",
@@ -71,9 +92,9 @@ const Home = () => {
                 </span>
               </div>
               <ul className="border boder-indigo-900/10 dark:border-white/10 px-2 py-4 list-unstyled flex flex-nowrap items-center overflow-auto lg:overflow-hidden gap-4 scroll-smooth">
-                {books.map((book, index) => (
+                {newbooks.map((newbooks, index) => (
                   <li key={index}>
-                    <BookCardNew key={book.id} data={book} />{" "}
+                    <BookCardNew key={newbooks.id} data={newbooks} />
                   </li>
                 ))}
               </ul>
