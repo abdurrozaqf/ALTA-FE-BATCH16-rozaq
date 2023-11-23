@@ -57,7 +57,7 @@ const Navbar = (props: Props) => {
         <img
           src={theme === "dark" ? LogoLight : Logo}
           alt="Logo"
-          className="w-[4rem]"
+          className="w-16 h-full"
         />
       </Link>
       <p className="mb-4 absolute md:relative invisible md:visible md:text-lg lg:text-xl font-semibold leading-none mt-3">

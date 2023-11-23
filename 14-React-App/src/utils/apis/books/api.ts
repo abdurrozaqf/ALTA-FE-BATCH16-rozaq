@@ -42,6 +42,16 @@ export const getPageBook = async (page: number) => {
   }
 };
 
+export const getNewBook = async () => {
+  try {
+    const response = await axiosWithConfig.get(`/books?sort=New`);
+
+    return response.data as Response<PayloadPagination<Book[]>>;
+  } catch (error: any) {
+    throw Error(error.response.data.message);
+  }
+};
+
 export const createBook = async (body: BookPayloadSchema) => {
   try {
     const response = await axiosWithConfig.post("/books", body);

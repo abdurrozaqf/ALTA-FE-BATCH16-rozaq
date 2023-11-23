@@ -6,6 +6,7 @@ import {
   updateBook,
   deleteBook,
   getPageBook,
+  getNewBook,
 } from "./api";
 import { Book, BookPayloadSchema, bookPayloadSchema } from "./types";
 
@@ -14,6 +15,7 @@ export {
   getDetailBook,
   getFeaturedBook,
   getPageBook,
+  getNewBook,
   createBook,
   updateBook,
   deleteBook,

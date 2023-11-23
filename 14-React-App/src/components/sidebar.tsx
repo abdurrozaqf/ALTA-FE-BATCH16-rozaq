@@ -23,7 +23,7 @@ export default function Sidebar({ children }: Props) {
           <img
             src={theme === "dark" ? LogoLight : Logo}
             className={`overflow-hidden transition-all duration-300 ${
-              expanded ? "w-44 h-auto" : "w-0 h-0"
+              expanded ? "w-44 h-full" : "w-0 h-0"
             }`}
             alt="Logo"
           />
