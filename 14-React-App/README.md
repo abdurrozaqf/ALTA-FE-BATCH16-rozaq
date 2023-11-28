@@ -1,3 +1,5 @@
-## Link website React Library App
+## Library App
 
-[Book Of Shadow](https://book-of-shadow.vercel.app/)
+Link: [Book Of Shadow](https://book-of-shadow.vercel.app/)
+
+Reference UI/UX: `My Book Shelf` by `Kenson_CS Official`
